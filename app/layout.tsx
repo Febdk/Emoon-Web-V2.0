@@ -13,9 +13,14 @@ export const metadata: Metadata = {
   title: "Emoon | Standar Baru Form Order Digital",
   description:
     "Emoon bantu fotografer, MUA, dan studio kreatif punya sistem pemesanan digital yang rapi, branded, dan profesional.",
-  // Tambahkan baris verification di bawah ini:
   verification: {
     google: "nyDe2TgpHwi_iMAHSc2CA0K9dv7UEnM_SWFrB3lP8d8",
+  },
+  // TEPAT DI SINI: Mengganti icon tab bar browser (Favicon)
+  icons: {
+    icon: "/icone-emoon.png", // Mengarah ke folder public/e-moon-Icone.png
+    shortcut: "/icone-emoon.png", // Backup untuk beberapa tipe browser lama
+    apple: "/icone-emoon.png", // Untuk icon pas user "Add to Home Screen" di iOS/Safari
   },
 };
 
