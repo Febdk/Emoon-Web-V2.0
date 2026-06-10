@@ -29,8 +29,8 @@ const CLIENTS: Client[] = [
     location: "Solo Raya",
     description:
       "Sistem pemesanan digital lengkap dengan pilihan paket, T&C, dan notifikasi WA otomatis.",
-    formUrl: "https://emoon.eformku.id/permata-foto", // TODO: ganti ke URL form asli
-    image: "/showcase/permata-thumbnail.png", // Contoh path gambar
+    formUrl: "https://eformku.id/permata-foto-booking",
+    image: "/showcase/permata-thumbnail.png",
     accent: "#7C3AED",
     isLive: true,
   },
@@ -42,8 +42,8 @@ const CLIENTS: Client[] = [
     location: "Solo Raya",
     description:
       "Sistem pemesanan digital lengkap dengan pilihan paket yang multi pilihan, data clien dan terkoneksi dengan kalander.",
-    formUrl: "https://eformku.id/berlinmakeup-booking-online", // TODO: ganti ke URL form asli
-    image: "/showcase/berlin-thumbnail.png", // Contoh path gambar
+    formUrl: "https://eformku.id/berlinmakeup-booking-online",
+    image: "/showcase/berlin-thumbnail.png",
     accent: "#7C3AED",
     isLive: true,
   },

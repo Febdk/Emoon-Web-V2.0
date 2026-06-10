@@ -28,9 +28,12 @@ export default function Footer() {
             >
               Demo
             </Link>
-            <a href="#" className="hover:text-white transition-colors">
+            <Link
+              href="/blog" 
+              className="hover:text-white transition-colors">
               Blog
-            </a>
+            </Link>
+            
           </div>
         </div>
         <div className="text-center text-white/30 text-sm border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">

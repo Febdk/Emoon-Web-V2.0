@@ -34,7 +34,7 @@ export default function FinalCTA() {
             <div className="flex items-center gap-2 text-white/60 text-sm">
               <span>Ada pertanyaan?</span>
               <a
-                href="https://wa.me/6281234567890"
+                href="https://wa.me/6285291619898"
                 className="text-white hover:text-[#F59E0B] underline underline-offset-4 transition-colors"
               >
                 Chat di WA
