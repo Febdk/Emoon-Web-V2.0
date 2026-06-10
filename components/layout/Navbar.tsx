@@ -60,7 +60,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 relative z-50 group">
           <Image
-            src="/e-moon-logo.png"
+            src="/icone-emoon.png"
             alt="emoon logo"
             width={120}
             height={120}
