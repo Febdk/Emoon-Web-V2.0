@@ -14,18 +14,19 @@ import Footer from "@/components/layout/Footer";
 
 // Mock Data Artikel MDX Lokal (Tinggal kamu tambah sesuka hati nanti)
 const BLOG_POSTS = [
-  {
-    slug: "automasi-form-booking-fotografer",
+    {
+    slug: "automasi-sangat-penting-untuk-vendor-kreatif",
     title:
-      "Mengapa Automasi Form Booking adalah Kunci Skala Bisnis Studio Fotografi",
+      "Mengapa Automasi Form Booking adalah Kunci...",
     description:
-      "Handle puluhan chat deal per hari manual lewat WhatsApp sangat menguras energi. Di balik layar, begini cara memotong birokrasi order hingga otomatis ter-rekap dalam sistem cloud.",
-    date: "Juni 08, 2026",
-    readTime: "5 min read",
+      "Mengatur alur Down Payment (DP) yang terikat dengan sistem konfirmasi aturan T&C tertulis di form digital terbukti meminimalisir pembatalan mendadak hingga 95%.",
+    date: "Juni 12, 2026",
+    readTime: "10 min read",
     category: "Tips Vendor",
     featured: true,
     accent: "from-[#7C3AED] to-[#F59E0B]",
-  },
+  },  
+
   {
     slug: "arsitektur-keamanan-data-emoon",
     title:
@@ -62,6 +63,7 @@ const BLOG_POSTS = [
     featured: false,
     accent: "from-[#D97706] to-[#7C3AED]",
   },
+ 
 ];
 
 const CATEGORIES = ["Semua", "Tips Vendor", "Behind the Build", "Update Emoon"];
