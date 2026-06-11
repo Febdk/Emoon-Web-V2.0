@@ -1,7 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import Preloader from "@/components/ui/Preloader"; // Sesuaikan dengan path folder tempat kamu menaruh file Preloader tadi
+import Preloader from "@/components/ui/Preloader";
+
+// 1. IMPORT GOOGLE ANALYTICS DI SINI:
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -16,11 +19,10 @@ export const metadata: Metadata = {
   verification: {
     google: "nyDe2TgpHwi_iMAHSc2CA0K9dv7UEnM_SWFrB3lP8d8",
   },
-  // TEPAT DI SINI: Mengganti icon tab bar browser (Favicon)
   icons: {
-    icon: "/icone-emoon.png", // Mengarah ke folder public/e-moon-Icone.png
-    shortcut: "/icone-emoon.png", // Backup untuk beberapa tipe browser lama
-    apple: "/icone-emoon.png", // Untuk icon pas user "Add to Home Screen" di iOS/Safari
+    icon: "/icone-emoon.png",
+    shortcut: "/icone-emoon.png",
+    apple: "/icone-emoon.png",
   },
 };
 
@@ -49,6 +51,10 @@ export default function RootLayout({
         </div>
         <div className="relative z-10">{children}</div>
       </body>
+
+      {/* 2. SUNTIKKAN DI SINI (Di luar body tapi masih di dalam tag html): */}
+      {/* Silakan ganti "G-XXXXXX" dengan Measurement ID asli dari dashboard Google Analytics kamu */}
+      <GoogleAnalytics gaId="G-Z61RV4WW3S" />
     </html>
   );
 }
