@@ -35,18 +35,6 @@ const CLIENTS: Client[] = [
     isLive: true,
   },
 
-  {
-    id: "berlin-makeup",
-    name: "Berlin Makeup",
-    category: "MUA",
-    location: "Solo Raya",
-    description:
-      "Sistem pemesanan digital lengkap dengan pilihan paket yang multi pilihan, data clien dan terkoneksi dengan kalander.",
-    formUrl: "https://eformku.id/berlinmakeup-booking-online",
-    image: "/showcase/berlin-thumbnail.png",
-    accent: "#7C3AED",
-    isLive: true,
-  },
 ];
 
 const GRID_SIZE = 3;

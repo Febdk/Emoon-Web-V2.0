@@ -28,18 +28,6 @@ const CLIENTS = [
     isLive: true,
   },
 
-  {
-    id: "berlin-makeup",
-    name: "Berlin Makeup",
-    category: "MUA",
-    location: "Solo Raya",
-    description:
-      "Sistem pemesanan digital lengkap dengan pilihan paket yang multi pilihan. Berlin Makeup adalah vendor MUA pertama yang mengunakan Emoon, yang sekarang sudah merasakan perbedaannya dalam memanajemen klien.",
-    formUrl: "https://eformku.id/berlinmakeup-booking-online",
-    image: "/showcase/berlin-thumbnail.png", // Jalur gambar di folder public
-    accent: "#7C3AED",
-    isLive: true,
-  },
 ];
 
 function ClientCard({
