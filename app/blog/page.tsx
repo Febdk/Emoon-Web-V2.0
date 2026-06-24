@@ -15,6 +15,17 @@ import Footer from "@/components/layout/Footer";
 // Mock Data Artikel MDX Lokal (Tinggal kamu tambah sesuka hati nanti)
 const BLOG_POSTS = [
     {
+    slug: "strategi-form-order-wa-vendor-kreatif",
+    title: "Strategi Transformasi Alur Kerja: Mengubah Chat Manual Menjadi Form Order Otomatis Terintegrasi untuk Vendor Kreatif",
+    description: "Pelajari bagaimana ekosistem Emoon Store membantu MUA, studio, dan fotografer mengeliminasi ghosting, mengotomatisasi rekap Google Spreadsheet, serta mengunci komitmen klien lewat sistem T&C.",
+    date: "Juni 24, 2026",
+    readTime: "12 min read",
+    category: "Tips Vendor",
+    featured: true,
+    accent: "from-[#3D3B8E] to-[#FFD700]",
+    },
+  
+    {
     slug: "automasi-sangat-penting-untuk-vendor-kreatif",
     title:
       "Mengapa Automasi Form Booking adalah Kunci...",
