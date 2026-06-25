@@ -28,9 +28,22 @@ const CLIENTS: Client[] = [
     category: "Wedding Photographer",
     location: "Solo Raya",
     description:
-      "Sistem pemesanan digital lengkap dengan pilihan paket, T&C, dan notifikasi WA otomatis.",
+      "Sistem pemesanan digital lengkap dengan pilihan paket, T&C, dan auto text ke WA.",
     formUrl: "https://eformku.id/permata-foto-booking",
     image: "/showcase/permata-thumbnail.png",
+    accent: "#7C3AED",
+    isLive: true,
+  },
+
+  {
+    id: "kronik-galerry",
+    name: "Kronik Galerry",
+    category: "Wedding Photographer",
+    location: "Solo Raya",
+    description:
+      "Sistem pemesanan digital lengkap dengan pilihan paket, T&C, auto text ke WA dan juga auto backup ke Google Sheet.",
+    formUrl: "https://eformku.id/kronik-galerry-booking",
+    image: "/showcase/kroni-galerry.png",
     accent: "#7C3AED",
     isLive: true,
   },

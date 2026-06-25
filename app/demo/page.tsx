@@ -28,6 +28,18 @@ const CLIENTS = [
     isLive: true,
   },
 
+  {
+    id: "kronik-galerry",
+    name: "Kronik Galerry",
+    category: "Wedding Photographer",
+    location: "Solo Raya",
+    description:
+      "Sistem pemesanan digital lengkap dengan pilihan paket, T&C, auto text ke WA dan juga auto backup ke Google Sheet. Custome form yang dibuat untuk vendor ini sudah terintegrasi dengan Google Sheet untuk memudahkan manajemen data.",
+    formUrl: "https://eformku.id/kronik-galerry-booking",
+    image: "/showcase/kroni-galerry.png",
+    accent: "#7C3AED",
+    isLive: true,
+  },
 ];
 
 function ClientCard({
@@ -143,7 +155,7 @@ export default function DemoPage() {
             {[
               { num: CLIENTS.length.toString(), label: "Klien aktif" },
               { num: "100%", label: "Form live & aktif" },
-              { num: "WA", label: "Notifikasi otomatis" },
+              { num: "WA", label: "Auto Text" },
             ].map((stat) => (
               <div
                 key={stat.label}
