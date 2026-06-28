@@ -14,29 +14,43 @@ import Footer from "@/components/layout/Footer";
 
 // Mock Data Artikel MDX Lokal (Tinggal kamu tambah sesuka hati nanti)
 const BLOG_POSTS = [
-    {
+  {
+    slug: "format-wa-manual-bikin-vendor-mua-rugi-besar",
+    title:
+      "4 Kerugian Fatal Jika Vendor MUA Masih Pakai Format Text WhatsApp Manual untuk Booking",
+    description:
+      "Terlalu sering melayani chat tanya-tanya berujung 'hit and run'? Ini alasan format pesanan teks manual bikin bisnis MUA kamu sulit berkembang dan kehilangan klien premium.",
+    date: "Juni 28, 2026",
+    readTime: "4 min read",
+    category: "Tip Vendor",
+    featured: true,
+    accent: "from-[#EC4899] to-[#F59E0B]", // Gradasi Pink-Orange estetik khas industri kecantikan & MUA
+    },
+
+  {
     slug: "strategi-form-order-wa-vendor-kreatif",
-    title: "Strategi Transformasi Alur Kerja: Mengubah Chat Manual Menjadi Form Order Otomatis Terintegrasi untuk Vendor Kreatif",
-    description: "Pelajari bagaimana ekosistem Emoon Store membantu MUA, studio, dan fotografer mengeliminasi ghosting, mengotomatisasi rekap Google Spreadsheet, serta mengunci komitmen klien lewat sistem T&C.",
+    title:
+      "Strategi Transformasi Alur Kerja: Mengubah Chat Manual Menjadi Form Order Otomatis Terintegrasi untuk Vendor Kreatif",
+    description:
+      "Pelajari bagaimana ekosistem Emoon Store membantu MUA, studio, dan fotografer mengeliminasi ghosting, mengotomatisasi rekap Google Spreadsheet, serta mengunci komitmen klien lewat sistem T&C.",
     date: "Juni 24, 2026",
     readTime: "12 min read",
     category: "Tips Vendor",
-    featured: true,
+    featured: false,
     accent: "from-[#3D3B8E] to-[#FFD700]",
-    },
-  
-    {
+  },
+
+  {
     slug: "automasi-sangat-penting-untuk-vendor-kreatif",
-    title:
-      "Mengapa Automasi Form Booking adalah Kunci...",
+    title: "Mengapa Automasi Form Booking adalah Kunci...",
     description:
       "Mengatur alur Down Payment (DP) yang terikat dengan sistem konfirmasi aturan T&C tertulis di form digital terbukti meminimalisir pembatalan mendadak hingga 95%.",
     date: "Juni 12, 2026",
     readTime: "10 min read",
     category: "Tips Vendor",
-    featured: true,
+    featured: false,
     accent: "from-[#7C3AED] to-[#F59E0B]",
-  },  
+  },
 
   {
     slug: "arsitektur-keamanan-data-emoon",
@@ -74,7 +88,6 @@ const BLOG_POSTS = [
     featured: false,
     accent: "from-[#D97706] to-[#7C3AED]",
   },
- 
 ];
 
 const CATEGORIES = ["Semua", "Tips Vendor", "Behind the Build", "Update Emoon"];

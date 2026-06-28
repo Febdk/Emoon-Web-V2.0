@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { ArrowLeft, Calendar, Clock, User, Share2 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
@@ -18,6 +19,122 @@ const BLOG_DATABASE: Record<
     content: React.ReactNode;
   }
 > = {
+  "format-wa-manual-bikin-vendor-mua-rugi-besar": {
+    title:
+      "4 Kerugian Fatal Jika Vendor MUA Masih Pakai Format Text WhatsApp Manual untuk Booking",
+    date: "Juni 28, 2026",
+    readTime: "4 min read",
+    category: "Manajemen MUA",
+    author: "Emoon Core Team",
+    content: (
+      <>
+        <p>
+          Bagi seorang <em>Makeup Artist</em> (MUA), waktu adalah aset yang
+          sangat berharga. Di tengah padatnya jadwal <em>retouch</em> subuh,
+          memilih produk kosmetik terbaik, hingga mengikuti tren riasan terbaru,
+          aspek administrasi sering kali menjadi hal yang paling melelahkan.
+          Apalagi jika bisnis MUA kamu masih mengandalkan format teks manual via
+          WhatsApp untuk mendata bookingan dari klien.
+        </p>
+
+        {/* Gambar Ilustrasi Utama */}
+        <div className="my-8 overflow-hidden rounded-2xl border border-[#FAF8FF]/10 bg-[#12101C]">
+          <div className="relative w-full h-[350px]">
+            <Image
+              src="https://images.pexels.com/photos/13933220/pexels-photo-13933220.jpeg"
+              alt="MUA professional makeup session"
+              className="object-cover opacity-90 hover:opacity-100 transition-opacity duration-300"
+              fill
+              unoptimized
+            />
+          </div>
+          <span className="block p-3 text-center text-xs text-[#FAF8FF]/50 italic border-t border-[#FAF8FF]/5">
+            sumber: Pexels.com (Foto oleh Ketut Subiyanto)
+          </span>
+        </div>
+
+        <p>
+          Mengirimkan format panjang seperti{" "}
+          <em>"Nama:, Tanggal Acara:, Jenis Makeup:, Alamat Lokasi:"</em>
+          mungkin terasa normal di awal merintis karier. Namun, seiring
+          meningkatnya
+          <em>brand value</em> dan jumlah portofolio kamu, kebiasaan ini
+          perlahan bisa menjadi lubang kerugian tersembunyi yang menahan
+          bisnismu untuk naik kelas. Berikut adalah 4 kerugian fatalnya:
+        </p>
+
+        <h3>1. Fenomena "Hit and Run" yang Menguras Energi</h3>
+        <p>
+          Berapa banyak waktu yang kamu habiskan dalam sehari hanya untuk
+          melayani calon klien yang bertanya{" "}
+          <em>"Kak, tanggal 10 Oktober slot Wedding-nya masih kosong?"</em>.
+          Kamu meluangkan waktu mengecek jadwal, mengirimkan format order, namun
+          setelah mereka mengisi teks tersebut, tiba-tiba mereka menghilang
+          tanpa kabar (<em>hit and run</em>). Format teks manual tidak
+          memberikan rasa urgensi atau ikatan komitmen psikologis apa pun kepada
+          calon pengantin.
+        </p>
+
+        <h3>2. Miskomunikasi Detail Riasan dan Alamat Acara</h3>
+        <p>
+          Saat teks format pesanan bertumpuk di ruang obrolan WhatsApp,
+          informasi penting rawan terselip. Klien sering kali salah mengetik jam
+          acara, lupa menyebutkan jumlah keluarga yang ikut di-makeup, atau
+          mengirimkan titik lokasi (share location) yang tidak akurat. Jika
+          terjadi *human error* saat kamu memindahkan data dari WhatsApp ke buku
+          catatan, reputasi profesionalitas kamu taruhannya pada hari H
+          pernikahan.
+        </p>
+
+        {/* Gambar Ilustrasi Kedua - Proses Detail */}
+        <div className="my-8 overflow-hidden rounded-2xl border border-[#FAF8FF]/10 bg-[#12101C]">
+          <img
+            src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop"
+            alt="Makeup brushes and cosmetics tools"
+            className="w-full h-[250px] object-cover opacity-80"
+          />
+        </div>
+
+        <h3>3. Kesulitan Memvalidasi DP (Down Payment) Secara Cepat</h3>
+        <p>
+          Sistem manual memaksa kamu untuk menjadi MUA sekaligus akuntan
+          dadakan. Kamu harus terus menerus meminta foto resi bukti transfer,
+          mencocokkannya dengan mutasi rekening m-banking, dan mengonfirmasinya
+          satu per satu secara berkala. Selama proses konfirmasi manual ini
+          menunda penguncian tanggal, kamu berisiko mengalami *double booking*
+          jika ada klien lain yang juga mengirim uang di waktu bersamaan.
+        </p>
+
+        <h3>4. Kehilangan Daya Tarik di Mata Klien Premium</h3>
+        <p>
+          Calon pengantin modern (khususnya Gen Z dan Milenial) sangat menyukai
+          segala sesuatu yang praktis, cepat, dan estetik. Mengajak mereka
+          bertukar teks panjang yang membingungkan terkesan kurang profesional.
+          Klien premium yang berani membayar jasa MUA hingga belasan juta rupiah
+          mengharapkan alur pemesanan yang eksklusif, bermerek (<em>branded</em>
+          ), dan terstruktur dengan rapi sejak impresi pertama.
+        </p>
+
+        {/* Highlight Call-to-Action styled Box */}
+        <div className="my-10 p-6 rounded-2xl bg-gradient-to-r from-[#EC4899]/15 to-[#F59E0B]/5 border border-[#EC4899]/20">
+          <h4 className="text-lg font-semibold text-[#EC4899] font-clash mb-2">
+            Saatnya MUA Naik Kelas: Ganti Teks WA dengan E-Form Instan Emoon
+          </h4>
+          <p className="text-sm leading-relaxed text-[#FAF8FF]/70">
+            Sudah saatnya kamu fokus 100% pada seni merias wajah dan menyerahkan
+            urusan administrasi kepada sistem. Dengan{" "}
+            <strong>Emoon (emoon.eformku.id)</strong>, kamu bisa membuat link
+            formulir booking digital khusus MUA yang cantik, memajang katalog
+            paket riasan, serta mengintegrasikan sistem otomatisasi pesan. Klien
+            bisa langsung memilih tanggal yang tersedia, mengisi form detail,
+            dan mendapatkan invoice otomatis terintegrasi WhatsApp. Bisnis makin
+            rapi, klien premium pun makin percaya!
+          </p>
+        </div>
+      </>
+    ),
+  },
+
   "strategi-form-order-wa-vendor-kreatif": {
     title:
       "Strategi Transformasi Alur Kerja: Mengubah Chat Manual Menjadi Form Order Otomatis Terintegrasi untuk Vendor Kreatif",

@@ -38,7 +38,7 @@ export default function Footer() {
         </div>
         <div className="text-center text-white/30 text-sm border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p>
-            © {new Date().getFullYear()} Emoon (eformku.id). All rights
+            © {new Date().getFullYear()} Emoon (emoon.eformku.id). All rights
             reserved.
           </p>
           <p className="mt-2 md:mt-0">Standar Baru Form Digital Vendor.</p>
