@@ -12,6 +12,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
+    
       <main>
         <Hero />
         <div id="problem">

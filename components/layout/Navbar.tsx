@@ -24,8 +24,8 @@ export default function Navbar() {
   const NAV_ITEMS = [
     { name: "Fitur", href: "#features", isHash: true },
     { name: "Cara Kerja", href: "#how-it-works", isHash: true },
-    { name: "Showcase", href: "#showcase", isHash: true },
-    { name: "Testimoni", href: "#testimonials", isHash: true },
+    { name: "Showcase", href: "/demo", isHash: false },
+    { name: "Testimoni", href: "/testimoni", isHash: false },
     { name: "Blog", href: "/blog", isHash: false },
   ];
 
