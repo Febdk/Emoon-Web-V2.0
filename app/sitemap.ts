@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { getAllBlogSlugs } from "@/lib/posts";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://emoon.eformku.id";
@@ -31,21 +32,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Array slug dari database artikel blog lokal kamu
-  const blogSlugs = [
-    "automasi-form-booking-fotografer",
-    "arsitektur-keamanan-data-emoon",
-    "update-fitur-v1-2-whatsapp-invoice",
-    "tips-makeup-artist-handling-client",
-  ];
+  // Mengambil seluruh slug artikel blog secara dinamis dari lib/posts.ts (atau API/DB di masa mendatang)
+  const blogSlugs = getAllBlogSlugs();
 
   // Generate sitemap untuk tiap detail artikel blog secara otomatis
   const blogRoutes = blogSlugs.map((slug) => ({
     url: `${baseUrl}/blog/${slug}`,
-    lastModified: new Date(), // Idealnya pakai tanggal rilis/update artikel asli
+    lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.6,
   }));
 
   return [...routes, ...blogRoutes];
 }
+
