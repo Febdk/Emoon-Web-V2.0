@@ -67,6 +67,66 @@ export const metadata: Metadata = {
   },
 };
 
+// JSON-LD Structured Data Schema untuk Rich Snippet Google
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Emoon Digital",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "IDR",
+        "availability": "https://schema.org/InStock",
+      },
+      "description":
+        "Sistem formulir pemesanan digital khusus fotografer, MUA, dan studio kreatif dengan integrasi WhatsApp otomatis dan Terms & Conditions.",
+      "url": "https://emoon.eformku.id",
+      "image": "https://emoon.eformku.id/icone-emoon.png",
+      "creator": {
+        "@type": "Organization",
+        "name": "Emoon Digital",
+        "url": "https://emoon.eformku.id",
+      },
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Apa itu Emoon?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text":
+              "Emoon adalah platform sistem pemesanan digital khusus vendor kreatif seperti fotografer, MUA, dan studio foto untuk mengotomatiskan booking, konfirmasi WhatsApp, dan rekap order.",
+          },
+        },
+        {
+          "@type": "Question",
+          "name": "Apakah Emoon terintegrasi dengan WhatsApp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text":
+              "Ya, Emoon dilengkapi notifikasi dan auto-text WhatsApp otomatis untuk konfirmasi booking, bukti DP, dan pengiriman invoice.",
+          },
+        },
+        {
+          "@type": "Question",
+          "name": "Siapa saja yang cocok menggunakan Emoon?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text":
+              "Emoon sangat cocok digunakan oleh Wedding Photographer, Makeup Artist (MUA), Studio Foto, Videografer, dan Freelancer Industri Kreatif.",
+          },
+        },
+      ],
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -78,6 +138,11 @@ export default function RootLayout({
         <link
           rel="stylesheet"
           href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap"
+        />
+        {/* Inject JSON-LD Schema Markup ke Head */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className={`${plusJakartaSans.className} relative min-h-screen`}>
