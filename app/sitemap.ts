@@ -25,6 +25,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${baseUrl}/demo`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/blog`,
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
@@ -32,7 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Mengambil seluruh slug artikel blog secara dinamis dari lib/posts.ts (atau API/DB di masa mendatang)
+  // Mengambil seluruh slug artikel blog secara dinamis dari lib/posts.ts
   const blogSlugs = getAllBlogSlugs();
 
   // Generate sitemap untuk tiap detail artikel blog secara otomatis
@@ -45,4 +51,3 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [...routes, ...blogRoutes];
 }
-

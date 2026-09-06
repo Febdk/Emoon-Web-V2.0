@@ -9,6 +9,15 @@ export const metadata: Metadata = {
   title: "Request Quote — Emoon",
   description:
     "Ceritain kebutuhan bisnismu, Emoon valuasi dan buatkan sistem order digital yang tepat sesuai brand kamu.",
+  alternates: {
+    canonical: "https://emoon.eformku.id/pricing",
+  },
+  openGraph: {
+    title: "Request Quote — Emoon",
+    description:
+      "Ceritain kebutuhan bisnismu, Emoon valuasi dan buatkan sistem order digital yang tepat sesuai brand kamu.",
+    url: "https://emoon.eformku.id/pricing",
+  },
 };
 
 const TRUST_ITEMS = [

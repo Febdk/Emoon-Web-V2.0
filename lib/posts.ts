@@ -12,6 +12,19 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "kesalahan-fatal-fotografer-wedding-kelola-booking",
+    title:
+      "5 Kesalahan Fatal Fotografer Wedding Saat Menerima Booking Klien (Dan Cara Mengatasinya)",
+    description:
+      "Sering pusing masalah DP hangus, reschedule mendadak, atau rekap jadwal berantakan? Simak 5 kesalahan operasional fotografer wedding dan solusi otomatisasi digitalnya.",
+    date: "September 5, 2026",
+    readTime: "5 min read",
+    category: "Tips Vendor",
+    featured: true,
+    accent: "from-[#7C3AED] via-[#EC4899] to-[#F59E0B]",
+    author: "Emoon Advisory Team",
+  },
+  {
     slug: "format-wa-manual-bikin-vendor-mua-rugi-besar",
     title:
       "4 Kerugian Fatal Jika Vendor MUA Masih Pakai Format Text WhatsApp Manual untuk Booking",
@@ -20,7 +33,7 @@ export const BLOG_POSTS: BlogPostMeta[] = [
     date: "Juni 28, 2026",
     readTime: "4 min read",
     category: "Tips Vendor",
-    featured: true,
+    featured: false,
     accent: "from-[#EC4899] to-[#F59E0B]",
     author: "Emoon Core Team",
   },

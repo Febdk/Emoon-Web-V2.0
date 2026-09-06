@@ -7,6 +7,67 @@ export interface BlogPostFullDetail extends BlogPostMeta {
 }
 
 const BLOG_CONTENT_DATABASE: Record<string, React.ReactNode> = {
+  "kesalahan-fatal-fotografer-wedding-kelola-booking": (
+    <>
+      <p>
+        Industri pernikahan adalah salah satu bisnis paling potensial sekaligus bernilai tinggi bagi seorang <em>wedding photographer</em>. Namun, di balik keindahan dokumentasi momen bahagia klien, terdapat urusan operasional pra-acara yang sangat kompleks: mengelola puluhan tanggal booking, mencatat Down Payment (DP), hingga mengirimkan struk konfirmasi.
+      </p>
+
+      <div className="my-8 overflow-hidden rounded-2xl border border-[#FAF8FF]/10 bg-[#12101C]">
+        <div className="relative w-full h-[320px]">
+          <Image
+            src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=1200&auto=format&fit=crop"
+            alt="Wedding photographer shooting a couple"
+            className="object-cover opacity-90 hover:opacity-100 transition-opacity duration-300"
+            fill
+            unoptimized
+          />
+        </div>
+        <span className="block p-3 text-center text-xs text-[#FAF8FF]/50 italic border-t border-[#FAF8FF]/5">
+          Foto dokumentasi tim fotografi di lokasi acara wedding
+        </span>
+      </div>
+
+      <p>
+        Banyak fotografer berbakat gagal berkembang bukan karena kualitas fotonya jelek, melainkan karena manajemen pemesanannya semrawut. Berikut 5 kesalahan fatal yang sering terjadi:
+      </p>
+
+      <h3>1. Mengunci Tanggal Tanpa Bukti Konfirmasi DP Resmi</h3>
+      <p>
+        Hanya berpegangan pada pesan singkat WhatsApp seperti <em>&quot;Kak, aku kunci tanggal 15 ya&quot;</em> tanpa menerbitkan invoice digital yang sah berisiko tinggi. Klien sering menganggap pesanan belum terikat resmi dan bisa beralih ke vendor lain secara sepihak.
+      </p>
+
+      <h3>2. Miskomunikasi Mengenai Hak Cipta & Ketentuan Reschedule</h3>
+      <p>
+        Ketika terjadi perubahan tanggal pernikahan karena alasan darurat, tidak sedikit klien yang menuntut pengembalian DP 100%. Tanpa klausul Terms & Conditions (T&C) tertulis yang disetujui klien saat mengisi form order, posisi hukum vendor menjadi sangat lemah.
+      </p>
+
+      <h3>3. Rekap Jadwal Manual yang Berisiko Double Booking</h3>
+      <p>
+        Menuliskan bookingan di buku catatan atau aplikasi HP tanpa sinkronisasi real-time rawan menyebabkan bentrok jadwal antar tim videografer dan fotografer utama.
+      </p>
+
+      <h3>4. Menunda Pengiriman Struk / Invoice Pembayaran</h3>
+      <p>
+        Klien yang telah mentransfer DP puluhan juta rupiah membutuhkan kepastian instan. Menunda pengiriman kuitansi bukti bayar hingga berhari-hari dapat merusak tingkat kepercayaan mereka terhadap brand kamu.
+      </p>
+
+      <h3>5. Alur Pemesanan yang Kurang Modern</h3>
+      <p>
+        Klien pasangan muda Gen-Z & Milenial berekspektasi tinggi terhadap pengalaman digital. Formulir order yang modern, terstruktur, dan estetik langsung membedakan fotografer profesional dari fotografer biasa.
+      </p>
+
+      <div className="my-10 p-6 rounded-2xl bg-gradient-to-r from-[#7C3AED]/20 via-[#EC4899]/15 to-[#F59E0B]/10 border border-[#7C3AED]/30 shadow-[0_0_30px_rgba(124,58,237,0.15)]">
+        <h4 className="text-xl font-semibold text-[#F59E0B] font-clash mb-3">
+          Otomatiskan Alur Pemesanan Fotografi Kamu Bersama Emoon
+        </h4>
+        <p className="text-sm leading-relaxed text-[#FAF8FF]/80">
+          Dengan platform <strong>Emoon (emoon.eformku.id)</strong>, fotografer dapat memiliki link form booking digital khusus yang terintegrasi langsung dengan konfirmasi WhatsApp otomatis, kalkulasi invoice instan, serta integrasi persetujuan aturan T&C digital. Bisnis lebih rapi, tim lebih fokus berkarya!
+        </p>
+      </div>
+    </>
+  ),
+
   "format-wa-manual-bikin-vendor-mua-rugi-besar": (
     <>
       <p>

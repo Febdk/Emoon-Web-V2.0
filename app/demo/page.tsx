@@ -9,6 +9,15 @@ export const metadata: Metadata = {
   title: "Demo & Showcase — Emoon",
   description:
     "Lihat semua form order digital yang sudah live dan dipakai vendor kreatif bersama Emoon.",
+  alternates: {
+    canonical: "https://emoon.eformku.id/demo",
+  },
+  openGraph: {
+    title: "Demo & Showcase — Emoon",
+    description:
+      "Lihat semua form order digital yang sudah live dan dipakai vendor kreatif bersama Emoon.",
+    url: "https://emoon.eformku.id/demo",
+  },
 };
 
 // ─────────────────────────────────────────────

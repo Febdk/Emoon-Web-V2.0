@@ -1,24 +1,80 @@
-"use client";
 import React from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
-import { useParams } from "next/navigation";
-import { ArrowLeft, Calendar, Clock, User, Share2 } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, User } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import ShareButton from "@/components/ui/ShareButton";
 
 import { getBlogPostFullDetail } from "@/lib/posts-content";
+import { getBlogPostMetaBySlug, getAllBlogSlugs } from "@/lib/posts";
 
-export default function BlogPostDetail() {
-  const params = useParams();
-  const slug = params?.slug as string;
+type Props = {
+  params: Promise<{ slug: string }>;
+};
 
-  // Mengambil artikel berdasarkan slug di URL secara terpusat
+/**
+ * Generasi parameter statis untuk pre-rendering semua artikel saat build (SSG / Static HTML)
+ */
+export function generateStaticParams() {
+  const blogSlugs = getAllBlogSlugs();
+  return blogSlugs.map((slug) => ({ slug }));
+}
+
+/**
+ * Generasi Metadata SEO & OpenGraph Dinamis per Artikel Blog
+ */
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getBlogPostMetaBySlug(slug);
+
+  if (!post) {
+    return {
+      title: "Artikel Tidak Ditemukan",
+    };
+  }
+
+  const url = `https://emoon.eformku.id/blog/${post.slug}`;
+
+  return {
+    title: `${post.title} — Emoon`,
+    description: post.description,
+    authors: [{ name: post.author }],
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      url: url,
+      siteName: "Emoon Digital",
+      locale: "id_ID",
+      type: "article",
+      publishedTime: post.date,
+      authors: [post.author],
+      images: [
+        {
+          url: "/icone-emoon.png",
+          width: 800,
+          height: 800,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: ["/icone-emoon.png"],
+    },
+  };
+}
+
+export default async function BlogPostDetail({ params }: Props) {
+  const { slug } = await params;
   const post = getBlogPostFullDetail(slug);
 
-
-
-  // Jika artikel tidak ditemukan di database lokal
+  // Jika artikel tidak ditemukan
   if (!post) {
     return (
       <>
@@ -83,7 +139,7 @@ export default function BlogPostDetail() {
             {post.title}
           </h1>
 
-          {/* AUTHOR INFO */}
+          {/* AUTHOR INFO & SHARE BUTTON */}
           <div className="flex items-center justify-between border-y border-[#FAF8FF]/10 py-4 mb-12">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-[#7C3AED]/10 border border-[#7C3AED]/20 flex items-center justify-center text-[#F59E0B]">
@@ -96,19 +152,10 @@ export default function BlogPostDetail() {
                 <div className="text-xs text-[#FAF8FF]/40">Verified Author</div>
               </div>
             </div>
-            <button
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                alert("Link artikel berhasil disalin, bro!");
-              }}
-              className="p-2 rounded-full bg-[#FAF8FF]/5 hover:bg-[#FAF8FF]/10 text-[#FAF8FF]/60 hover:text-[#FAF8FF] transition-colors"
-              title="Salin Link"
-            >
-              <Share2 size={16} />
-            </button>
+            <ShareButton />
           </div>
 
-          {/* ISI KONTEN UTAMA (INDUSTRIAL-TYPOGRAPHY STYLE) */}
+          {/* ISI KONTEN UTAMA */}
           <article
             className="prose prose-invert max-w-none text-[#FAF8FF]/80 leading-relaxed space-y-6 text-base md:text-lg
             prose-headings:font-clash prose-headings:font-semibold prose-headings:text-[#FAF8FF]
