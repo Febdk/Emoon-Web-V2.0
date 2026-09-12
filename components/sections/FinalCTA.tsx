@@ -28,7 +28,7 @@ export default function FinalCTA() {
             tepat.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <Link href="/pricing">
+            <Link href="/simulator">
               <Button icon={<ArrowRight size={18} />}>Mulai Sekarang</Button>
             </Link>
             <div className="flex items-center gap-2 text-white/60 text-sm">

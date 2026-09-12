@@ -35,7 +35,7 @@ export default function PricingPage() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-[#7C3AED]/15 blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-[#F59E0B]/5 blur-[100px] pointer-events-none" />
 
-        <div className="container mx-auto px-6 max-w-3xl relative z-10">
+        <div className="container mx-auto px-6 max-w-6xl relative z-10">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white/70 transition-colors mb-10 group"
@@ -49,10 +49,10 @@ export default function PricingPage() {
 
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm font-medium text-[#F59E0B] mb-6">
-              ✦ Bukan tarif pukul rata — sesuai kebutuhanmu
+              ✦ Transparan & Tanpa Biaya Sewa Bulanan
             </div>
             <h1 className="font-clash text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.1] tracking-tight text-white mb-5">
-              Ceritain{" "}
+              Rincian Invoice &{" "}
               <span
                 style={{
                   backgroundClip: "text",
@@ -62,12 +62,11 @@ export default function PricingPage() {
                     "linear-gradient(to right, #7c3aed, #f59e0b)",
                 }}
               >
-                kebutuhanmu
+                Kalkulator Harga
               </span>
             </h1>
             <p className="text-lg text-white/55 max-w-xl mx-auto leading-relaxed">
-              Isi form di bawah, gua valuasi dulu kebutuhan spesifik bisnismu,
-              baru kasih penawaran yang tepat sasaran.
+              Lihat rincian invoice dan kalkulasi estimasi total biaya e-form kamu secara otomatis. Klik satu tombol untuk terhubung langsung ke WhatsApp Emoon.
             </p>
           </div>
 

@@ -5,6 +5,8 @@ import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
+
+
 export const metadata: Metadata = {
   title: "Demo & Showcase — Emoon",
   description:
@@ -200,14 +202,13 @@ export default function DemoPage() {
               Mau form kamu ada di sini?
             </h2>
             <p className="text-white/50 mb-8 max-w-md mx-auto">
-              Ceritain kebutuhan bisnismu, gua buatkan form yang sesuai brand
-              dan langsung bisa dipakai.
+              Coba simulasikan formulir order digital impianmu dan dapatkan rincian invoice instan.
             </p>
             <Link
-              href="/pricing"
-              className="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#7C3AED] text-white font-medium hover:bg-[#6D28D9] hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] transition-all duration-300"
+              href="/simulator"
+              className="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#F59E0B] text-white font-medium hover:opacity-90 hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] transition-all duration-300"
             >
-              Request Quote Sekarang
+              Mulai Simulasikan Form
               <ArrowRight
                 size={16}
                 className="transition-transform duration-200 group-hover:translate-x-1"
@@ -220,3 +221,4 @@ export default function DemoPage() {
     </>
   );
 }
+

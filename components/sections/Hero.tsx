@@ -102,12 +102,13 @@ export default function Hero() {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           {/* Badge dengan border semi-transparan dan text warna Gold */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#7C3AED]/20 bg-[#0F0A1E]/60 backdrop-blur-md text-sm font-medium text-[#D97706] mb-8 shadow-[0_0_15px_rgba(124,58,237,0.1)]">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#7C3AED]/30 bg-[#0F0A1E]/80 backdrop-blur-md text-xs sm:text-sm font-medium text-[#F59E0B] mb-8 shadow-[0_0_20px_rgba(124,58,237,0.2)]">
+            <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
             Bisnis Kamu Layak Punya Sistem yang Lebih Baik
           </div>
 
           {/* Heading utama menggunakan warna Light (#FAF8FF) */}
-          <h1 className="font-clash text-5xl md:text-7xl lg:text-[80px] font-semibold leading-[1.05] tracking-tight mb-8 text-[#FAF8FF]">
+          <h1 className="font-clash text-4xl sm:text-6xl md:text-7xl lg:text-[80px] font-semibold leading-[1.08] tracking-tight mb-8 text-[#FAF8FF]">
             Standar Baru Cara <br className="hidden md:block" /> Vendor{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7C3AED] via-[#F59E0B] to-[#D97706]">
               Terima Order
@@ -115,17 +116,17 @@ export default function Hero() {
           </h1>
 
           {/* Sub-headline pakai opacity 70% dari warna Light */}
-          <p className="text-lg md:text-xl text-[#FAF8FF]/70 max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-[#FAF8FF]/70 max-w-2xl mx-auto mb-10 leading-relaxed px-2">
             Emoon bantu fotografer, MUA, dan studio kreatif punya sistem
             pemesanan digital yang rapi, branded, dan profesional — tanpa ribet
             setup sendiri.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/pricing">
+            <Link href="/simulator">
               <Button
                 icon={<ArrowRight size={18} />}
-                className="bg-[#7C3AED] hover:bg-[#7C3AED]/90 text-[#FAF8FF]"
+                className="bg-[#7C3AED] hover:bg-[#6D28D9] text-[#FAF8FF] shadow-[0_0_25px_rgba(124,58,237,0.4)] hover:shadow-[0_0_35px_rgba(124,58,237,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
                 Mulai Sekarang
               </Button>

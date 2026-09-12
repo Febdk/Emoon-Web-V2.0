@@ -183,13 +183,13 @@ export default function TestimoniPage() {
             ))}
           </motion.div>
 
-          <p className="text-center text-sm text-[#FAF8FF]/25 mt-16">
+          <p className="text-center text-sm text-[#FAF8FF]/35 mt-16">
             Siap untuk punya sistem order digital sendiri?{" "}
             <Link
-              href="/pricing"
-              className="text-[#FAF8FF]/40 underline underline-offset-4 hover:text-[#FAF8FF]/60 transition-colors"
+              href="/simulator"
+              className="text-[#FAF8FF]/60 underline underline-offset-4 hover:text-[#F59E0B] transition-colors font-medium"
             >
-              Request Quote Sekarang
+              Coba Simulator Sekarang
             </Link>
           </p>
         </div>

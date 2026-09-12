@@ -24,6 +24,7 @@ export default function Navbar() {
   const NAV_ITEMS = [
     { name: "Fitur", href: "#features", isHash: true },
     { name: "Cara Kerja", href: "#how-it-works", isHash: true },
+    { name: "Simulator", href: "/simulator", isHash: false },
     { name: "Showcase", href: "/demo", isHash: false },
     { name: "Testimoni", href: "/testimoni", isHash: false },
     { name: "Blog", href: "/blog", isHash: false },
@@ -96,10 +97,10 @@ export default function Navbar() {
         {/* CTA Button */}
         <div className="hidden md:flex">
           <Link
-            href="/pricing"
+            href="/simulator"
             className="group inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium bg-[#7C3AED] text-[#FAF8FF] hover:bg-[#6D28D9] hover:shadow-[0_0_25px_rgba(124,58,237,0.4)] transition-all duration-300 border border-[#7C3AED]/50"
           >
-            Request Quote
+            Coba Simulator
             <ArrowRight
               size={14}
               className="transition-transform duration-200 group-hover:translate-x-1"
@@ -181,11 +182,11 @@ export default function Navbar() {
 
             <motion.div variants={itemVariants} className="pt-4">
               <Link
-                href="/pricing"
+                href="/simulator"
                 onClick={() => setIsOpen(false)}
                 className="inline-flex items-center justify-center gap-2 w-full rounded-full px-5 py-3 text-base font-medium bg-gradient-to-r from-[#7C3AED] to-[#F59E0B] text-[#FAF8FF] shadow-[0_4px_15px_rgba(124,58,237,0.3)] hover:opacity-90 transition-opacity"
               >
-                Request Quote
+                Coba Simulator
                 <ArrowRight size={16} />
               </Link>
             </motion.div>

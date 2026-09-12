@@ -1,8 +1,16 @@
 import "./globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import Preloader from "@/components/ui/Preloader";
 import { GoogleAnalytics } from "@next/third-parties/google";
+
+export const viewport: Viewport = {
+  themeColor: "#0F0A1E",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],

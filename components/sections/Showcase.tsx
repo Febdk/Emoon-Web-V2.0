@@ -127,7 +127,7 @@ function EmptySlot({ index }: { index: number }) {
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
       <Link
-        href="/pricing"
+        href="/simulator"
         className="group block rounded-2xl overflow-hidden transition-all duration-300 hover:bg-[#7C3AED]/5 h-full"
         style={{ border: "1px dashed rgba(255,255,255,0.1)" }}
       >
@@ -157,7 +157,7 @@ function EmptySlot({ index }: { index: number }) {
             Jadikan bisnismu bagian dari showcase Emoon.
           </p>
           <div className="flex items-center gap-2 text-sm font-medium text-white/20 group-hover:text-[#7C3AED]/80 transition-colors">
-            Request Quote
+            Coba Simulator
             <ArrowRight
               size={14}
               className="transition-transform duration-200 group-hover:translate-x-1"

@@ -1,157 +1,210 @@
 "use client";
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Send, CheckCircle2, ChevronDown } from "lucide-react";
+
+// ============================================================================
+// EMOON DYNAMIC QUOTE & INVOICE CALCULATOR (COMPONENTS/SECTIONS/REQUESTQUOTEFORM)
+// Penanda: Komponen penerima query params dari simulator, penampil rincian invoice,
+// kalkulasi total harga otomatis (Rupiah), dan tombol kirim pesan terformat ke WA.
+// ============================================================================
+
+import React, { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { motion } from "framer-motion";
+import {
+  Send,
+  CheckCircle2,
+  ChevronDown,
+  Receipt,
+  Sparkles,
+  ShieldCheck,
+  Zap,
+  HelpCircle,
+} from "lucide-react";
 import { Button } from "../ui/CustomComponents";
+
+// MAPPING HARGA RETAIL FITUR
+const BASE_PRICE = 149000; // Harga dasar sistem E-Form
+
+const FITUR_PRICE_MAP: Record<
+  string,
+  { label: string; price: number; description: string }
+> = {
+  form_order: {
+    label: "Sistem Form Order Digital",
+    price: 0, // Sudah termasuk di Base Price
+    description: "Formulir booking rapi terintegrasi",
+  },
+  notif_wa: {
+    label: "Notifikasi WA Invoice Otomatis",
+    price: 50000,
+    description: "Kirim struk & DP langsung ke WA klien",
+  },
+  pricelist: {
+    label: "Katalog Pricelist Interaktif",
+    price: 40000,
+    description: "Tampilkan foto & rincian paket layanan",
+  },
+  custom_branding: {
+    label: "Custom Branding & Logo",
+    price: 30000,
+    description: "Pasang logo & warna khas brand vendor",
+  },
+  google_sheet: {
+    label: "Auto-Sync Google Spreadsheet",
+    price: 50000,
+    description: "Otomatisasi rekap data order tanpa manual",
+  },
+  tc: {
+    label: "Syarat & Ketentuan (T&C)",
+    price: 30000,
+    description: "Kotak persetujuan aturan DP & hukum",
+  },
+  multi_paket: {
+    label: "Multi-Paket & Add-on Selector",
+    price: 40000,
+    description: "Kalkulator variasi paket & item tambahan",
+  },
+};
 
 const JENIS_USAHA = [
   "Fotografer Wedding",
-  "Fotografer Portrait / Keluarga",
   "MUA (Makeup Artist)",
-  "Studio Foto",
   "Videografer",
-  "Desainer Grafis",
+  "Studio Foto",
+  "Fotografer Portrait / Keluarga",
   "Event Organizer",
   "Usaha Kreatif Lainnya",
-];
-
-const FITUR_OPTIONS = [
-  { id: "form_order", label: "Form Order Digital" },
-  { id: "pricelist", label: "Pricelist Terintegrasi" },
-  { id: "notif_wa", label: "Notifikasi WhatsApp" },
-  { id: "branding", label: "Custom Branding (Logo, Warna)" },
-  { id: "rekap", label: "Rekap Data Otomatis" },
-  { id: "link_bio", label: "Link Bio (untuk IG / Linktree)" },
-  { id: "multi_paket", label: "Multi Paket / Tier Harga" },
-  { id: "galeri", label: "Galeri / Portfolio" },
-];
-
-const BUDGET_OPTIONS = [
-  { value: "", label: "Pilih range (opsional)" },
-  { value: "< 200k", label: "Di bawah Rp 200.000" },
-  { value: "200k - 500k", label: "Rp 200.000 – 500.000" },
-  { value: "500k - 1jt", label: "Rp 500.000 – 1.000.000" },
-  { value: "> 1jt", label: "Di atas Rp 1.000.000" },
-  { value: "belum tau", label: "Belum tau / Fleksibel" },
 ];
 
 interface FormData {
   nama: string;
   bisnis: string;
   jenis_usaha: string;
-  kebutuhan: string;
   fitur: string[];
   nomor_wa: string;
-  budget: string;
+  catatanTambahan?: string;
 }
 
-const initialForm: FormData = {
-  nama: "",
-  bisnis: "",
-  jenis_usaha: "",
-  kebutuhan: "",
-  fitur: [],
-  nomor_wa: "",
-  budget: "",
-};
+function QuoteFormContent() {
+  const searchParams = useSearchParams();
 
-function InputField({
-  label,
-  hint,
-  required,
-  children,
-}: {
-  label: string;
-  hint?: string;
-  required?: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="space-y-2">
-      <label className="block text-sm font-medium text-white/80">
-        {label}
-        {required && <span className="text-[#F59E0B] ml-1">*</span>}
-        {hint && (
-          <span className="ml-2 text-white/30 font-normal text-xs">{hint}</span>
-        )}
-      </label>
-      {children}
-    </div>
-  );
-}
+  // Ambil data awal dari URL Query Parameters jika berasal dari Simulator
+  const paramProfil = searchParams.get("profil") || "";
+  const paramFitur = searchParams.get("fitur")
+    ? searchParams.get("fitur")!.split(",")
+    : ["form_order", "notif_wa", "tc"];
+  const paramNama = searchParams.get("nama") || "";
 
-const inputClass =
-  "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/25 focus:outline-none focus:border-[#7C3AED]/60 focus:bg-[#7C3AED]/5 transition-all duration-200 text-sm";
+  const [form, setForm] = useState<FormData>({
+    nama: "",
+    bisnis: paramNama,
+    jenis_usaha: paramProfil || "Fotografer Wedding",
+    fitur: paramFitur,
+    nomor_wa: "",
+    catatanTambahan: "",
+  });
 
-export default function RequestQuoteForm() {
-  const [form, setForm] = useState<FormData>(initialForm);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
-    {},
+    {}
   );
 
-  const set = (field: keyof FormData, value: string) => {
+  // Sync state bila params berubah
+  useEffect(() => {
+    if (paramProfil) setForm((f) => ({ ...f, jenis_usaha: paramProfil }));
+    if (paramNama) setForm((f) => ({ ...f, bisnis: paramNama }));
+    if (paramFitur.length > 0) setForm((f) => ({ ...f, fitur: paramFitur }));
+  }, [paramProfil, paramNama, searchParams.get("fitur")]);
+
+  const setField = (field: keyof FormData, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) setErrors((e) => ({ ...e, [field]: undefined }));
   };
 
   const toggleFitur = (id: string) => {
-    setForm((prev) => ({
-      ...prev,
-      fitur: prev.fitur.includes(id)
-        ? prev.fitur.filter((f) => f !== id)
-        : [...prev.fitur, id],
-    }));
+    setForm((prev) => {
+      const exists = prev.fitur.includes(id);
+      return {
+        ...prev,
+        fitur: exists
+          ? prev.fitur.filter((f) => f !== id)
+          : [...prev.fitur, id],
+      };
+    });
   };
+
+  // KALKULASI HARGA OTOMATIS
+  const addOnsTotal = form.fitur.reduce((acc, fitId) => {
+    const item = FITUR_PRICE_MAP[fitId];
+    return acc + (item ? item.price : 0);
+  }, 0);
+
+  const subtotal = BASE_PRICE + addOnsTotal;
+  // Diskon khusus jika memilih 4 fitur atau lebih
+  const discount = form.fitur.length >= 4 ? 40000 : 0;
+  const totalPrice = Math.max(subtotal - discount, BASE_PRICE);
+
+  const formatRupiah = (val: number) =>
+    new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      maximumFractionDigits: 0,
+    }).format(val);
 
   const validate = () => {
     const e: Partial<Record<keyof FormData, string>> = {};
-    if (!form.nama.trim()) e.nama = "Nama wajib diisi";
-    if (!form.bisnis.trim()) e.bisnis = "Nama bisnis wajib diisi";
-    if (!form.jenis_usaha) e.jenis_usaha = "Pilih jenis usaha";
-    if (!form.kebutuhan.trim()) e.kebutuhan = "Ceritain dulu kebutuhanmu";
-    if (!form.nomor_wa.trim()) e.nomor_wa = "Nomor WA wajib diisi";
+    if (!form.nama.trim()) e.nama = "Nama Anda wajib diisi";
+    if (!form.bisnis.trim()) e.bisnis = "Nama brand/bisnis wajib diisi";
+    if (!form.nomor_wa.trim()) e.nomor_wa = "Nomor WhatsApp wajib diisi";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
 
+  // MEMBANGUN TEKS PESAN WHATSAPP TERFORMAT RAPI
   const buildWAMessage = () => {
-    const fiturLabel = form.fitur
-      .map((id) => FITUR_OPTIONS.find((f) => f.id === id)?.label)
+    const fiturListText = form.fitur
+      .map((id) => {
+        const item = FITUR_PRICE_MAP[id];
+        return item ? `  • ${item.label}` : null;
+      })
       .filter(Boolean)
-      .join(", ");
+      .join("\n");
 
-    return encodeURIComponent(
-      `Halo Emoon! 👋\n\nGua mau request quote sistem order digital.\n\n` +
-        `*Nama:* ${form.nama}\n` +
-        `*Bisnis:* ${form.bisnis}\n` +
-        `*Jenis Usaha:* ${form.jenis_usaha}\n` +
-        `*Kebutuhan:* ${form.kebutuhan}\n` +
-        `*Fitur yang diinginkan:* ${fiturLabel || "-"}\n` +
-        `*Budget:* ${form.budget || "Belum ditentukan"}\n\n` +
-        `Tolong bantu valuasi dan kasih harga terbaik ya!`,
-    );
+    const message =
+      `Halo Emoon! 👋\n\n` +
+      `Saya ingin memesan sistem E-Form Digital dengan rincian berikut:\n\n` +
+      `📋 *INFORMASI PEMESAN*\n` +
+      `• *Nama Pemesan:* ${form.nama}\n` +
+      `• *Nama Brand / Studio:* ${form.bisnis}\n` +
+      `• *Jenis Usaha:* ${form.jenis_usaha}\n` +
+      `• *Nomor WA Kontak:* ${form.nomor_wa}\n\n` +
+      `⚙️ *FITUR E-FORM DIPILIH (${form.fitur.length}):*\n` +
+      `  • Base E-Form System (${formatRupiah(BASE_PRICE)})\n` +
+      `${fiturListText}\n\n` +
+      (discount > 0 ? `🎁 *POTONGAN DISKON COMBO:* -${formatRupiah(discount)}\n` : "") +
+      `💰 *ESTIMASI TOTAL INVOICE:* ${formatRupiah(totalPrice)} (One-Time Payment)\n\n` +
+      (form.catatanTambahan ? `📝 *Catatan Khusus:* ${form.catatanTambahan}\n\n` : "") +
+      `Mohon dibantu konfirmasi pesanan dan proses penerbitan e-form saya ya! Terima kasih.`;
+
+    return encodeURIComponent(message);
   };
 
   const handleSubmit = async () => {
     if (!validate()) return;
     setLoading(true);
 
-    // Simulate brief loading for UX
-    await new Promise((r) => setTimeout(r, 800));
+    await new Promise((r) => setTimeout(r, 600));
 
     setLoading(false);
     setSubmitted(true);
 
-    // Open WA after short delay
     setTimeout(() => {
-      const waNumber = "6285291619898"; // TODO: ganti nomor WA owner
+      const waNumber = "6285291619898"; // Nomor WhatsApp Emoon Owner
       window.open(
         `https://wa.me/${waNumber}?text=${buildWAMessage()}`,
-        "_blank",
+        "_blank"
       );
-    }, 1200);
+    }, 1000);
   };
 
   if (submitted) {
@@ -159,255 +212,282 @@ export default function RequestQuoteForm() {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="glass-card rounded-3xl p-12 text-center max-w-lg mx-auto"
+        className="glass-card rounded-3xl p-10 text-center max-w-lg mx-auto border border-[#7C3AED]/30 shadow-2xl"
       >
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: "spring", delay: 0.2 }}
-          className="w-20 h-20 rounded-full bg-[#7C3AED]/20 border border-[#7C3AED]/30 flex items-center justify-center mx-auto mb-6"
-        >
-          <CheckCircle2 size={40} className="text-[#7C3AED]" />
-        </motion.div>
+        <div className="w-20 h-20 rounded-full bg-[#10B981]/20 border border-[#10B981]/30 flex items-center justify-center mx-auto mb-6">
+          <CheckCircle2 size={40} className="text-[#10B981]" />
+        </div>
         <h3 className="font-clash text-3xl font-semibold text-white mb-3">
-          Request Terkirim!
+          Rincian Invoice Terbuka di WA!
         </h3>
-        <p className="text-white/60 leading-relaxed mb-8">
-          WhatsApp kamu bakal terbuka otomatis. Kalau belum terbuka,{" "}
-          <button
-            onClick={() => {
-              const waNumber = "6285291619898";
-              window.open(
-                `https://wa.me/6285291619898?text=${buildWAMessage()}`,
-                "_blank",
-              );
-            }}
-            className="text-[#F59E0B] underline underline-offset-4 hover:text-[#D97706] transition-colors"
-          >
-            klik di sini
-          </button>
-          .
+        <p className="text-white/70 leading-relaxed mb-6 text-sm">
+          Aplikasi WhatsApp kamu akan otomatis terbuka dengan rincian invoice sebesar{" "}
+          <strong className="text-[#F59E0B] font-semibold">{formatRupiah(totalPrice)}</strong>.
         </p>
-        <p className="text-sm text-white/40">
-          Gua akan valuasi kebutuhanmu dan balas dalam 1×24 jam.
-        </p>
+        <button
+          onClick={() => {
+            const waNumber = "6285291619898";
+            window.open(
+              `https://wa.me/${waNumber}?text=${buildWAMessage()}`,
+              "_blank"
+            );
+          }}
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#25D366] text-white font-medium hover:opacity-90 transition-opacity text-sm mb-6"
+        >
+          <Send size={16} /> Buka WhatsApp Sekarang
+        </button>
+        <div className="text-xs text-white/40 border-t border-white/10 pt-4">
+          Tim Emoon akan mengonfirmasi rincian e-form kamu secara langsung via WhatsApp.
+        </div>
       </motion.div>
     );
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="glass-card rounded-3xl p-8 md:p-10 max-w-2xl mx-auto"
-    >
-      <div className="space-y-7">
-        {/* Identitas */}
-        <div className="grid sm:grid-cols-2 gap-5">
-          <InputField label="Nama kamu" required>
-            <input
-              type="text"
-              placeholder="Misal: Budi Santoso"
-              value={form.nama}
-              onChange={(e) => set("nama", e.target.value)}
-              className={inputClass}
-            />
-            {errors.nama && (
-              <p className="text-xs text-red-400 mt-1">{errors.nama}</p>
-            )}
-          </InputField>
-
-          <InputField label="Nama bisnis" required>
-            <input
-              type="text"
-              placeholder="Misal: Lumina Pictures"
-              value={form.bisnis}
-              onChange={(e) => set("bisnis", e.target.value)}
-              className={inputClass}
-            />
-            {errors.bisnis && (
-              <p className="text-xs text-red-400 mt-1">{errors.bisnis}</p>
-            )}
-          </InputField>
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      {/* SISI KIRI (7 KOLOM): FORM ISIAN PEMESAN */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="lg:col-span-7 glass-card rounded-3xl p-6 sm:p-8 space-y-6 text-left border border-[#7C3AED]/20 shadow-xl"
+      >
+        <div>
+          <span className="text-xs font-semibold uppercase tracking-wider text-[#7C3AED] px-3 py-1 rounded-full bg-[#7C3AED]/10 border border-[#7C3AED]/20 inline-block mb-2">
+            Form Pemesanan E-Form
+          </span>
+          <h3 className="font-clash text-2xl font-semibold text-white">
+            Isi Data Kontak & Pilih Fitur
+          </h3>
+          <p className="text-xs text-white/50 mt-1">
+            Sesuaikan fitur kebutuhanmu di bawah. Total harga invoice di sebelah kanan akan terhitung otomatis secara live.
+          </p>
         </div>
 
-        {/* Jenis usaha */}
-        <InputField label="Jenis usaha" required>
-          <div className="relative">
-            <select
-              value={form.jenis_usaha}
-              onChange={(e) => set("jenis_usaha", e.target.value)}
-              className={`${inputClass} appearance-none cursor-pointer pr-10 ${
-                !form.jenis_usaha ? "text-white/25" : "text-white"
-              }`}
-            >
-              <option value="" disabled className="bg-[#0F0A1E] text-white/50">
-                Pilih jenis usaha kamu
-              </option>
-              {JENIS_USAHA.map((j) => (
-                <option key={j} value={j} className="bg-[#0F0A1E] text-white">
-                  {j}
-                </option>
-              ))}
-            </select>
-            <ChevronDown
-              size={16}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none"
-            />
-          </div>
-          {errors.jenis_usaha && (
-            <p className="text-xs text-red-400 mt-1">{errors.jenis_usaha}</p>
-          )}
-        </InputField>
-
-        {/* Kebutuhan */}
-        <InputField
-          label="Ceritain kebutuhanmu"
-          hint="semakin detail, makin tepat valuasinya"
-          required
-        >
-          <textarea
-            rows={4}
-            placeholder="Contoh: Gua fotografer wedding di Solo, klien sering nanya paket via WA dan sering ketinggalan info. Pengen ada form yang klien bisa isi sendiri lengkap dengan T&C dan pilihan paket..."
-            value={form.kebutuhan}
-            onChange={(e) => set("kebutuhan", e.target.value)}
-            className={`${inputClass} resize-none leading-relaxed`}
-          />
-          {errors.kebutuhan && (
-            <p className="text-xs text-red-400 mt-1">{errors.kebutuhan}</p>
-          )}
-        </InputField>
-
-        {/* Fitur checkbox */}
-        <InputField
-          label="Fitur yang kamu inginkan"
-          hint="boleh pilih lebih dari satu"
-        >
-          <div className="grid grid-cols-2 gap-2.5 mt-1">
-            {FITUR_OPTIONS.map((fitur) => {
-              const checked = form.fitur.includes(fitur.id);
-              return (
-                <button
-                  key={fitur.id}
-                  type="button"
-                  onClick={() => toggleFitur(fitur.id)}
-                  className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border text-sm text-left transition-all duration-200 ${
-                    checked
-                      ? "border-[#7C3AED]/60 bg-[#7C3AED]/10 text-white"
-                      : "border-white/10 bg-white/3 text-white/50 hover:border-white/20 hover:text-white/70"
-                  }`}
-                >
-                  <span
-                    className={`w-4 h-4 rounded-[4px] border flex items-center justify-center flex-shrink-0 transition-all duration-200 ${
-                      checked
-                        ? "bg-[#7C3AED] border-[#7C3AED]"
-                        : "border-white/20"
-                    }`}
-                  >
-                    {checked && (
-                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                        <path
-                          d="M1 4L3.5 6.5L9 1"
-                          stroke="white"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    )}
-                  </span>
-                  {fitur.label}
-                </button>
-              );
-            })}
-          </div>
-        </InputField>
-
-        {/* Nomor WA + Budget */}
-        <div className="grid sm:grid-cols-2 gap-5">
-          <InputField label="Nomor WhatsApp" required>
+        {/* INPUT IDENTITAS */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-1.5">
+            <label className="block text-xs font-medium text-white/80">
+              Nama Anda <span className="text-[#F59E0B]">*</span>
+            </label>
             <input
-              type="tel"
-              placeholder="08xxxxxxxxxx"
-              value={form.nomor_wa}
-              onChange={(e) => set("nomor_wa", e.target.value)}
-              className={inputClass}
+              type="text"
+              placeholder="Contoh: Budi Santoso"
+              value={form.nama}
+              onChange={(e) => setField("nama", e.target.value)}
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-white placeholder:text-white/25 focus:outline-none focus:border-[#7C3AED] text-xs transition-all"
             />
-            {errors.nomor_wa && (
-              <p className="text-xs text-red-400 mt-1">{errors.nomor_wa}</p>
+            {errors.nama && (
+              <p className="text-[11px] text-red-400">{errors.nama}</p>
             )}
-          </InputField>
+          </div>
 
-          <InputField label="Budget estimasi" hint="opsional">
+          <div className="space-y-1.5">
+            <label className="block text-xs font-medium text-white/80">
+              Nama Brand / Studio <span className="text-[#F59E0B]">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Contoh: Permata Photo / Glow MUA"
+              value={form.bisnis}
+              onChange={(e) => setField("bisnis", e.target.value)}
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-white placeholder:text-white/25 focus:outline-none focus:border-[#7C3AED] text-xs transition-all"
+            />
+            {errors.bisnis && (
+              <p className="text-[11px] text-red-400">{errors.bisnis}</p>
+            )}
+          </div>
+        </div>
+
+        {/* JENIS USAHA & NO WA */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-1.5">
+            <label className="block text-xs font-medium text-white/80">
+              Jenis Usaha
+            </label>
             <div className="relative">
               <select
-                value={form.budget}
-                onChange={(e) => set("budget", e.target.value)}
-                className={`${inputClass} appearance-none cursor-pointer pr-10 ${
-                  !form.budget ? "text-white/25" : "text-white"
-                }`}
+                value={form.jenis_usaha}
+                onChange={(e) => setField("jenis_usaha", e.target.value)}
+                className="w-full bg-[#18122B] border border-white/10 rounded-xl px-3.5 py-2.5 text-white text-xs appearance-none cursor-pointer pr-8 focus:outline-none"
               >
-                {BUDGET_OPTIONS.map((b) => (
-                  <option
-                    key={b.value}
-                    value={b.value}
-                    disabled={b.value === "" && !form.budget}
-                    className="bg-[#0F0A1E] text-white"
-                  >
-                    {b.label}
+                {JENIS_USAHA.map((j) => (
+                  <option key={j} value={j} className="bg-[#0F0A1E]">
+                    {j}
                   </option>
                 ))}
               </select>
               <ChevronDown
-                size={16}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none"
+                size={14}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none"
               />
             </div>
-          </InputField>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="block text-xs font-medium text-white/80">
+              Nomor WhatsApp Kontak <span className="text-[#F59E0B]">*</span>
+            </label>
+            <input
+              type="tel"
+              placeholder="08xxxxxxxxxx"
+              value={form.nomor_wa}
+              onChange={(e) => setField("nomor_wa", e.target.value)}
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-white placeholder:text-white/25 focus:outline-none focus:border-[#7C3AED] text-xs transition-all"
+            />
+            {errors.nomor_wa && (
+              <p className="text-[11px] text-red-400">{errors.nomor_wa}</p>
+            )}
+          </div>
         </div>
 
-        {/* Submit */}
-        <div className="pt-2">
+        {/* TOGGLE FITUR PAKET */}
+        <div className="space-y-2 pt-1">
+          <label className="block text-xs font-medium text-white/80 flex items-center justify-between">
+            <span>Pilih Fitur Tambahan (Add-on)</span>
+            <span className="text-[11px] text-[#F59E0B]">
+              {form.fitur.length >= 4 ? "🎁 Hemat Rp 40rb Activated!" : "Centang untuk tambah fitur"}
+            </span>
+          </label>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            {Object.entries(FITUR_PRICE_MAP).map(([id, item]) => {
+              const checked = form.fitur.includes(id);
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => toggleFitur(id)}
+                  className={`p-3 rounded-xl border text-left flex items-start justify-between transition-all duration-200 ${
+                    checked
+                      ? "bg-[#7C3AED]/20 border-[#7C3AED] text-white"
+                      : "bg-white/5 border-white/10 text-white/50 hover:border-white/20 hover:text-white"
+                  }`}
+                >
+                  <div>
+                    <div className="text-xs font-semibold text-white">
+                      {item.label}
+                    </div>
+                    <div className="text-[10px] text-white/40 mt-0.5">
+                      {item.description}
+                    </div>
+                  </div>
+                  <div className="text-right flex-shrink-0 ml-2">
+                    <span className="text-[11px] font-semibold text-[#F59E0B]">
+                      {item.price === 0 ? "Included" : `+${formatRupiah(item.price)}`}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* SISI KANAN (5 KOLOM): CATATAN INVOICE REAL-TIME CALCULATOR */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="lg:col-span-5 lg:sticky lg:top-28 space-y-4 text-left"
+      >
+        <div className="bg-[#0F0A1E] border border-[#7C3AED]/30 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+          {/* AMBIENT GLOW INSIDE INVOICE CARD */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#7C3AED]/20 rounded-full blur-2xl pointer-events-none" />
+
+          {/* HEADER CATATAN INVOICE */}
+          <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+            <div className="flex items-center gap-2">
+              <Receipt size={18} className="text-[#F59E0B]" />
+              <h4 className="font-clash font-semibold text-base text-white">
+                Draf Invoice Pesanan
+              </h4>
+            </div>
+            <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-[#10B981]/20 text-[#10B981]">
+              One-Time Payment
+            </span>
+          </div>
+
+          {/* INFO VENDOR */}
+          <div className="space-y-1 text-xs text-white/70 mb-4 bg-white/5 p-3 rounded-xl border border-white/5">
+            <div className="flex justify-between">
+              <span className="text-white/40">Brand / Studio:</span>
+              <span className="font-semibold text-white">{form.bisnis || "Belum diisi"}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-white/40">Jenis Usaha:</span>
+              <span>{form.jenis_usaha}</span>
+            </div>
+          </div>
+
+          {/* RINCIAN ITEMIZE HARGA */}
+          <div className="space-y-2.5 text-xs text-white/80 border-b border-white/10 pb-4 mb-4">
+            <div className="flex justify-between items-center">
+              <span>System E-Form Order Base</span>
+              <span className="font-semibold text-white">{formatRupiah(BASE_PRICE)}</span>
+            </div>
+
+            {form.fitur.map((fitId) => {
+              const item = FITUR_PRICE_MAP[fitId];
+              if (!item || item.price === 0) return null;
+              return (
+                <div key={fitId} className="flex justify-between items-center text-white/60">
+                  <span className="truncate pr-2">+ {item.label}</span>
+                  <span className="font-medium text-white">{formatRupiah(item.price)}</span>
+                </div>
+              );
+            })}
+
+            {discount > 0 && (
+              <div className="flex justify-between items-center text-[#10B981] pt-1">
+                <span className="flex items-center gap-1 font-medium">
+                  <Sparkles size={12} /> Diskon Combo (≥ 4 Fitur)
+                </span>
+                <span className="font-semibold">-{formatRupiah(discount)}</span>
+              </div>
+            )}
+          </div>
+
+          {/* TOTAL INVOICE */}
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <div className="text-xs text-white/40">Estimasi Total Biaya:</div>
+              <div className="font-clash text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#7C3AED] via-[#EC4899] to-[#F59E0B]">
+                {formatRupiah(totalPrice)}
+              </div>
+            </div>
+            <div className="text-[10px] text-right text-white/40">
+              Tanpa biaya bulanan
+            </div>
+          </div>
+
+          {/* TOMBOL ACTION SUBMIT TO WA */}
           <Button
             onClick={handleSubmit}
             disabled={loading}
             icon={loading ? undefined : <Send size={16} />}
-            className="w-full py-4 text-base"
+            className="w-full py-3.5 text-sm bg-gradient-to-r from-[#7C3AED] to-[#F59E0B] hover:opacity-95 shadow-[0_0_25px_rgba(124,58,237,0.4)]"
           >
-            {loading ? (
-              <span className="flex items-center gap-2">
-                <svg
-                  className="animate-spin w-4 h-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v8z"
-                  />
-                </svg>
-                Memproses...
-              </span>
-            ) : (
-              "Kirim Request"
-            )}
+            {loading ? "Memproses Invoice..." : "Kirim Order via WhatsApp"}
           </Button>
-          <p className="text-center text-xs text-white/30 mt-4">
-            Setelah submit, gua akan valuasi kebutuhan dan kasih harga terbaik
-            dalam 1×24 jam.
+
+          <p className="text-center text-[10px] text-white/30 mt-3 flex items-center justify-center gap-1">
+            <ShieldCheck size={12} className="text-[#10B981]" /> Konsultasi & Penyesuaian Gratis via WA
           </p>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
+  );
+}
+
+export default function RequestQuoteForm() {
+  return (
+    <Suspense
+      fallback={
+        <div className="text-center py-12 text-white/40 text-sm">
+          Memuat kalkulator invoice...
+        </div>
+      }
+    >
+      <QuoteFormContent />
+    </Suspense>
   );
 }
