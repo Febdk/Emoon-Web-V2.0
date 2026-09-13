@@ -1,0 +1,17 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Model Skema Utama Emoon
+model FormSubmission {
+  id           Int      @id @default(autoincrement())
+  customerName String
+  whatsappNo   String
+  formData     Json
+  createdAt    DateTime @default(now())
+}
