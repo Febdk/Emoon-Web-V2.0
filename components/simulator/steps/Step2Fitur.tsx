@@ -7,13 +7,13 @@
 import React from "react";
 import { motion } from "framer-motion";
 import {
-  FileText,
-  MessageSquare,
-  LayoutGrid,
+  FileEdit,
+  Send,
+  Tags,
   Palette,
-  Table,
-  CheckSquare,
-  Sliders,
+  FileSpreadsheet,
+  ShieldCheck,
+  Layers,
   Check,
 } from "lucide-react";
 import { SimulatorState, FITUR_OPTIONS } from "../types";
@@ -24,13 +24,13 @@ interface Step2FiturProps {
 }
 
 const ICON_MAP: Record<string, React.ReactNode> = {
-  FileText: <FileText size={18} />,
-  MessageSquare: <MessageSquare size={18} />,
-  LayoutGrid: <LayoutGrid size={18} />,
+  FileEdit: <FileEdit size={18} />,
+  Send: <Send size={18} />,
+  Tags: <Tags size={18} />,
   Palette: <Palette size={18} />,
-  Table: <Table size={18} />,
-  CheckSquare: <CheckSquare size={18} />,
-  Sliders: <Sliders size={18} />,
+  FileSpreadsheet: <FileSpreadsheet size={18} />,
+  ShieldCheck: <ShieldCheck size={18} />,
+  Layers: <Layers size={18} />,
 };
 
 export default function Step2Fitur({ state, onToggleFitur }: Step2FiturProps) {

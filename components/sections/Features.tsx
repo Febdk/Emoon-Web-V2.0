@@ -2,44 +2,44 @@
 import React from "react";
 import { motion } from "framer-motion";
 import {
-  CheckCircle2,
-  FileText,
-  Zap,
-  Palette,
-  Share2,
-  Database,
+  FileCheck2,
+  Tag,
+  BellRing,
+  Sparkles,
+  QrCode,
+  Layers,
 } from "lucide-react";
 import { SectionLabel, SectionTitle } from "../ui/CustomComponents";
 
 export default function Features() {
   const features = [
     {
-      icon: <CheckCircle2 size={20} />,
+      icon: <FileCheck2 size={20} />,
       title: "Form Order Digital",
       desc: "Klien isi sendiri, data langsung rapi. Nggak ada lagi tanya-jawab panjang di WA.",
     },
     {
-      icon: <FileText size={20} />,
+      icon: <Tag size={20} />,
       title: "Pricelist Terintegrasi",
       desc: "Harga dan paket tampil profesional, sesuai identitas brand kamu.",
     },
     {
-      icon: <Zap size={20} />,
+      icon: <BellRing size={20} />,
       title: "Notifikasi Otomatis",
       desc: "Setiap order masuk langsung tercatat dan bisa kamu follow up seketika.",
     },
     {
-      icon: <Palette size={20} />,
+      icon: <Sparkles size={20} />,
       title: "Fully Branded",
       desc: "Nama, warna, logo kamu — bukan template generik.",
     },
     {
-      icon: <Share2 size={20} />,
+      icon: <QrCode size={20} />,
       title: "Mudah Dibagikan",
       desc: "Satu link sakti, siap disebar ke IG, WA, atau bio Linktree kamu.",
     },
     {
-      icon: <Database size={20} />,
+      icon: <Layers size={20} />,
       title: "Data Tersimpan Rapi",
       desc: "Semua data klien terkumpul rapi di satu tempat, siap diakses kapan saja.",
     },

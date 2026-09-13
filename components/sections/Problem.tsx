@@ -1,23 +1,23 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { MessageSquare, FileText, CalendarX } from "lucide-react";
+import { MessageSquareDashed, FileStack, CalendarClock } from "lucide-react";
 import { SectionLabel, SectionTitle } from "../ui/CustomComponents";
 
 export default function Problem() {
   const painPoints = [
     {
-      icon: <MessageSquare size={24} className="text-[#F59E0B]" />,
+      icon: <MessageSquareDashed size={24} className="text-[#F59E0B]" />,
       title: "Chat WA penuh order masuk",
       desc: "tapi datanya susah dilacak dan sering ketumpuk chat lain.",
     },
     {
-      icon: <FileText size={24} className="text-[#F59E0B]" />,
+      icon: <FileStack size={24} className="text-[#F59E0B]" />,
       title: "Pricelist dikirim manual",
       desc: "tiap ada yang nanya harga, harus kirim PDF berulang kali.",
     },
     {
-      icon: <CalendarX size={24} className="text-[#F59E0B]" />,
+      icon: <CalendarClock size={24} className="text-[#F59E0B]" />,
       title: "Booking bentrok",
       desc: "karena nggak ada sistem pencatatan tanggal yang jelas dan otomatis.",
     },

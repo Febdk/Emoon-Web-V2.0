@@ -1,30 +1,30 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Clock, Palette, ShieldCheck, MessageCircle } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import RequestQuoteForm from "@/components/sections/RequestQuoteForm";
 
 export const metadata: Metadata = {
-  title: "Request Quote — Emoon",
+  title: "Rincian Invoice & Kalkulator Harga — Emoon",
   description:
-    "Ceritain kebutuhan bisnismu, Emoon valuasi dan buatkan sistem order digital yang tepat sesuai brand kamu.",
+    "Hitung estimasi total biaya sistem e-form booking digital bisnis kreatif kamu secara instan dan transparan.",
   alternates: {
     canonical: "https://emoon.eformku.id/pricing",
   },
   openGraph: {
-    title: "Request Quote — Emoon",
+    title: "Rincian Invoice & Kalkulator Harga — Emoon",
     description:
-      "Ceritain kebutuhan bisnismu, Emoon valuasi dan buatkan sistem order digital yang tepat sesuai brand kamu.",
+      "Hitung estimasi total biaya sistem e-form booking digital bisnis kreatif kamu secara instan dan transparan.",
     url: "https://emoon.eformku.id/pricing",
   },
 };
 
 const TRUST_ITEMS = [
-  { icon: "⚡", text: "Respon dalam 1×24 jam" },
-  { icon: "🎨", text: "Fully custom sesuai brand" },
-  { icon: "🔒", text: "Data kamu aman & private" },
-  { icon: "💬", text: "Konsultasi gratis dulu" },
+  { icon: <Clock size={14} className="text-[#F59E0B]" />, text: "Respon dalam 1×24 jam" },
+  { icon: <Palette size={14} className="text-[#7C3AED]" />, text: "Fully custom sesuai brand" },
+  { icon: <ShieldCheck size={14} className="text-[#10B981]" />, text: "Data kamu aman & private" },
+  { icon: <MessageCircle size={14} className="text-[#EC4899]" />, text: "Konsultasi gratis dulu" },
 ];
 
 export default function PricingPage() {

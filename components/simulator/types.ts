@@ -52,7 +52,7 @@ export const PROFIL_OPTIONS: {
     id: "Videografer",
     label: "Videografer / Cinema",
     description: "Booking jadwal shoot, daftar add-on drone & cinematic reel",
-    icon: "Video",
+    icon: "Clapperboard",
     defaultFitur: ["form_order", "notif_wa", "multi_paket", "custom_branding"],
   },
   {
@@ -60,7 +60,7 @@ export const PROFIL_OPTIONS: {
     label: "Studio Foto",
     description:
       "Formulir slot jam studio, tema dekorasi, & otomatisasi recap Sheet",
-    icon: "Building",
+    icon: "Building2",
     defaultFitur: ["form_order", "notif_wa", "google_sheet", "multi_paket"],
   },
   {
@@ -68,7 +68,7 @@ export const PROFIL_OPTIONS: {
     label: "Vendor Kreatif Lainnya",
     description:
       "Kustomisasi formulir order sesuai kebutuhan bisnis kreatif kamu",
-    icon: "Layers",
+    icon: "Palette",
     defaultFitur: ["form_order", "notif_wa"],
   },
 ];
@@ -79,19 +79,19 @@ export const FITUR_OPTIONS: FiturOption[] = [
     id: "form_order",
     name: "Form Order Digital",
     description: "Input nama, tanggal acara, lokasi, & detail pesanan klien",
-    iconName: "FileText",
+    iconName: "FileEdit",
   },
   {
     id: "notif_wa",
     name: "Notifikasi WA Otomatis",
     description: "Kirim rincian invoice & kuitansi DP langsung ke WhatsApp",
-    iconName: "MessageSquare",
+    iconName: "Send",
   },
   {
     id: "pricelist",
     name: "Katalog Pricelist",
     description: "Tampilkan foto & rincian paket layanan langsung di form",
-    iconName: "LayoutGrid",
+    iconName: "Tags",
   },
   {
     id: "custom_branding",
@@ -103,20 +103,20 @@ export const FITUR_OPTIONS: FiturOption[] = [
     id: "google_sheet",
     name: "Auto Sheet Sync",
     description: "Otomatisasi rekap data orderan ke Google Spreadsheet",
-    iconName: "Table",
+    iconName: "FileSpreadsheet",
   },
   {
     id: "tc",
     name: "Syarat & Ketentuan (T&C)",
     description: "Kotak persetujuan aturan DP hangus & reschedule hukum",
-    iconName: "CheckSquare",
+    iconName: "ShieldCheck",
   },
   {
     id: "multi_paket",
     name: "Multi-Paket & Add-on",
     description:
       "Pilihan variasi paket & item tambahan dengan kalkulator total",
-    iconName: "Sliders",
+    iconName: "Layers",
   },
 ];
 

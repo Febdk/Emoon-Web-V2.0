@@ -16,6 +16,7 @@ import {
   Wifi,
   Battery,
   ShieldAlert,
+  Camera,
 } from "lucide-react";
 import { SimulatorState } from "./types";
 
@@ -129,8 +130,8 @@ export default function MockFormCard({
                   </span>
                 </label>
                 <div className="p-2.5 rounded-xl bg-[#18122B] border border-[#FAF8FF]/10 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-[#271E44] flex items-center justify-center text-sm font-bold text-[#FAF8FF]/90">
-                    📸
+                  <div className="w-10 h-10 rounded-lg bg-[#271E44] flex items-center justify-center text-sm font-bold text-[#FAF8FF]/90 border border-white/5">
+                    <Camera size={16} className="text-[#F59E0B]" />
                   </div>
                   <div className="flex-1">
                     <div className="text-xs font-semibold text-[#FAF8FF]">

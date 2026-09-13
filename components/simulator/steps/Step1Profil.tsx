@@ -6,7 +6,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Camera, Sparkles, Video, Building, Layers, Check } from "lucide-react";
+import { Camera, Sparkles, Clapperboard, Building2, Palette, Check } from "lucide-react";
 import { SimulatorState, PROFIL_OPTIONS, BusinessProfil } from "../types";
 
 interface Step1ProfilProps {
@@ -17,9 +17,9 @@ interface Step1ProfilProps {
 const ICON_MAP: Record<string, React.ReactNode> = {
   Camera: <Camera size={22} />,
   Sparkles: <Sparkles size={22} />,
-  Video: <Video size={22} />,
-  Building: <Building size={22} />,
-  Layers: <Layers size={22} />,
+  Clapperboard: <Clapperboard size={22} />,
+  Building2: <Building2 size={22} />,
+  Palette: <Palette size={22} />,
 };
 
 export default function Step1Profil({
