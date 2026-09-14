@@ -10,8 +10,10 @@ generator client {
 // Model Skema Utama Emoon
 model FormSubmission {
   id           Int      @id @default(autoincrement())
-  customerName String
-  whatsappNo   String
-  formData     Json
-  createdAt    DateTime @default(now())
+  customerName String   @map("customer_name")
+  whatsappNo   String   @map("whatsapp_no")
+  formData     Json     @map("form_data")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("form_submissions")
 }

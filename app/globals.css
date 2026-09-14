@@ -1,11 +1,23 @@
 @import "tailwindcss";
 
-:root {
+/* ============================================================
+   TAILWIND v4 — CSS-FIRST THEME CONFIGURATION
+   Menggantikan tailwind.config.ts theme.extend untuk v4.
+   ============================================================ */
+@theme {
+  /* Brand Colors */
   --color-primary: #7c3aed;
   --color-secondary: #f59e0b;
+  --color-accent: #d97706;
   --color-dark: #0f0a1e;
   --color-light: #faf8ff;
+
+  /* Typography */
+  --font-sans: var(--font-jakarta), "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Clash Display", ui-sans-serif, sans-serif;
 }
+
+
 
 /* iOS & Android Touch Optimization */
 * {

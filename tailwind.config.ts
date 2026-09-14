@@ -1,27 +1,19 @@
 import type { Config } from "tailwindcss";
 
+// NOTE: Tailwind v4 menggunakan CSS-first approach via @theme di globals.css.
+// File ini dipertahankan hanya untuk backward compatibility.
+// Warna brand sudah didefinisikan via @theme { --color-* } di globals.css.
 const config: Config = {
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
   theme: {
     extend: {
-      colors: {
-        primary: "#7C3AED",
-        secondary: "#F59E0B",
-        accent: "#D97706",
-        dark: "#0F0A1E",
-        light: "#FAF8FF",
-      },
       fontFamily: {
-        // Kita set default sans ke font yang bakal kita import di layout
-        sans: ['var(--font-jakarta)', 'sans-serif'],
-        display: ['var(--font-clash)', 'sans-serif'],
+        // Referensi ke CSS variable yang diset oleh next/font di layout.tsx
+        sans: ["var(--font-jakarta)", "Plus Jakarta Sans", "sans-serif"],
+        display: ["Clash Display", "sans-serif"],
       },
     },
   },
   plugins: [],
 };
+
 export default config;

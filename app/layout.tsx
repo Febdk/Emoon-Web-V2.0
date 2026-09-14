@@ -16,7 +16,9 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
+  variable: "--font-jakarta",
 });
+
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://emoon.eformku.id"),
@@ -49,7 +51,7 @@ export const metadata: Metadata = {
     siteName: "Emoon Digital",
     images: [
       {
-        url: "/icone-emoon.png",
+        url: "https://emoon.eformku.id/icone-emoon.png",
         width: 800,
         height: 800,
         alt: "Emoon Logo Branding",
@@ -63,7 +65,7 @@ export const metadata: Metadata = {
     title: "Emoon | Standar Baru Form Order Digital",
     description:
       "Emoon bantu fotografer, MUA, dan studio kreatif punya sistem pemesanan digital yang rapi, branded, dan profesional.",
-    images: ["/icone-emoon.png"],
+    images: ["https://emoon.eformku.id/icone-emoon.png"],
   },
   verification: {
     google: "nyDe2TgpHwi_iMAHSc2CA0K9dv7UEnM_SWFrB3lP8d8",
@@ -143,6 +145,14 @@ export default function RootLayout({
   return (
     <html lang="id" className="scroll-smooth">
       <head>
+        {/* Preconnect: percepat DNS lookup ke Fontshare CDN */}
+        <link rel="preconnect" href="https://api.fontshare.com" />
+        {/* Preload: hindari render-blocking untuk Clash Display */}
+        <link
+          rel="preload"
+          as="style"
+          href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap"
+        />
         <link
           rel="stylesheet"
           href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap"
@@ -153,7 +163,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${plusJakartaSans.className} relative min-h-screen`}>
+      {/* variable meng-expose --font-jakarta ke seluruh DOM */}
+      <body className={`${plusJakartaSans.variable} font-sans relative min-h-screen`}>
         {/* PRELOADER GLOBAL */}
         <Preloader />
 

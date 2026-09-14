@@ -6,7 +6,7 @@
 // kalkulasi total harga otomatis (Rupiah), dan tombol kirim pesan terformat ke WA.
 // ============================================================================
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import {
@@ -16,10 +16,10 @@ import {
   Receipt,
   Sparkles,
   ShieldCheck,
-  Zap,
-  HelpCircle,
 } from "lucide-react";
 import { Button } from "../ui/CustomComponents";
+import { EMOON_WA_NUMBER } from "@/lib/constants";
+
 
 // MAPPING HARGA RETAIL FITUR
 const BASE_PRICE = 149000; // Harga dasar sistem E-Form
@@ -89,10 +89,17 @@ function QuoteFormContent() {
 
   // Ambil data awal dari URL Query Parameters jika berasal dari Simulator
   const paramProfil = searchParams.get("profil") || "";
-  const paramFitur = searchParams.get("fitur")
-    ? searchParams.get("fitur")!.split(",")
-    : ["form_order", "notif_wa", "tc"];
+  const paramFiturString = searchParams.get("fitur") || ""; // String stabil untuk deps
   const paramNama = searchParams.get("nama") || "";
+
+  // useMemo agar array paramFitur tidak re-create reference setiap render
+  const paramFitur = useMemo(
+    () =>
+      paramFiturString
+        ? paramFiturString.split(",")
+        : ["form_order", "notif_wa", "tc"],
+    [paramFiturString],
+  );
 
   const [form, setForm] = useState<FormData>({
     nama: "",
@@ -109,12 +116,12 @@ function QuoteFormContent() {
     {}
   );
 
-  // Sync state bila params berubah
+  // Sync state bila params berubah — deps stabil menggunakan primitive & memo value
   useEffect(() => {
     if (paramProfil) setForm((f) => ({ ...f, jenis_usaha: paramProfil }));
     if (paramNama) setForm((f) => ({ ...f, bisnis: paramNama }));
     if (paramFitur.length > 0) setForm((f) => ({ ...f, fitur: paramFitur }));
-  }, [paramProfil, paramNama, searchParams.get("fitur")]);
+  }, [paramProfil, paramNama, paramFitur]);
 
   const setField = (field: keyof FormData, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -199,9 +206,8 @@ function QuoteFormContent() {
     setSubmitted(true);
 
     setTimeout(() => {
-      const waNumber = "6285291619898"; // Nomor WhatsApp Emoon Owner
       window.open(
-        `https://wa.me/${waNumber}?text=${buildWAMessage()}`,
+        `https://wa.me/${EMOON_WA_NUMBER}?text=${buildWAMessage()}`,
         "_blank"
       );
     }, 1000);
@@ -226,9 +232,8 @@ function QuoteFormContent() {
         </p>
         <button
           onClick={() => {
-            const waNumber = "6285291619898";
             window.open(
-              `https://wa.me/${waNumber}?text=${buildWAMessage()}`,
+              `https://wa.me/${EMOON_WA_NUMBER}?text=${buildWAMessage()}`,
               "_blank"
             );
           }}
