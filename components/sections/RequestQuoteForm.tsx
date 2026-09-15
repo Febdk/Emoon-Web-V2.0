@@ -6,7 +6,7 @@
 // kalkulasi total harga otomatis (Rupiah), simpan DB, dan kirim pesan terformat ke WA.
 // ============================================================================
 
-import React, { useState, useEffect, Suspense, useMemo } from "react";
+import React, { useState, Suspense, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import {
@@ -86,7 +86,7 @@ interface FormData {
 function QuoteFormContent() {
   const searchParams = useSearchParams();
 
-  // Ambil data awal langsung saat inisialisasi state (Tanpa Effect setState tambahan)
+  // Ambil data awal langsung saat inisialisasi state
   const paramProfil = searchParams.get("profil") || "";
   const paramFiturString = searchParams.get("fitur") || "";
   const paramNama = searchParams.get("nama") || "";
@@ -375,7 +375,6 @@ function QuoteFormContent() {
         </div>
 
         <div className="space-y-2 pt-1">
-          {/* Hapus 'block' agar tidak bentrok dengan 'flex' */}
           <label className="text-xs font-medium text-white/80 flex items-center justify-between">
             <span>Pilih Fitur Tambahan (Add-on)</span>
             <span className="text-[11px] text-[#F59E0B]">
@@ -516,5 +515,20 @@ function QuoteFormContent() {
         </div>
       </motion.div>
     </div>
+  );
+}
+
+// EKSPOR DEFAULT KOMPONEN UTAMA BERPEMBUNGKUS SUSPENSE
+export default function RequestQuoteForm() {
+  return (
+    <Suspense
+      fallback={
+        <div className="text-center py-12 text-white/40 text-sm">
+          Memuat kalkulator invoice...
+        </div>
+      }
+    >
+      <QuoteFormContent />
+    </Suspense>
   );
 }
