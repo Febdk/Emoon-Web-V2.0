@@ -3,7 +3,7 @@
 // ============================================================================
 // EMOON DYNAMIC QUOTE & INVOICE CALCULATOR (COMPONENTS/SECTIONS/REQUESTQUOTEFORM)
 // Penanda: Komponen penerima query params dari simulator, penampil rincian invoice,
-// kalkulasi total harga otomatis (Rupiah), dan tombol kirim pesan terformat ke WA.
+// kalkulasi total harga otomatis (Rupiah), simpan DB, dan kirim pesan terformat ke WA.
 // ============================================================================
 
 import React, { useState, useEffect, Suspense, useMemo } from "react";
@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import { Button } from "../ui/CustomComponents";
 import { EMOON_WA_NUMBER } from "@/lib/constants";
-
 
 // MAPPING HARGA RETAIL FITUR
 const BASE_PRICE = 149000; // Harga dasar sistem E-Form
@@ -87,12 +86,11 @@ interface FormData {
 function QuoteFormContent() {
   const searchParams = useSearchParams();
 
-  // Ambil data awal dari URL Query Parameters jika berasal dari Simulator
+  // Ambil data awal langsung saat inisialisasi state (Tanpa Effect setState tambahan)
   const paramProfil = searchParams.get("profil") || "";
-  const paramFiturString = searchParams.get("fitur") || ""; // String stabil untuk deps
+  const paramFiturString = searchParams.get("fitur") || "";
   const paramNama = searchParams.get("nama") || "";
 
-  // useMemo agar array paramFitur tidak re-create reference setiap render
   const paramFitur = useMemo(
     () =>
       paramFiturString
@@ -101,27 +99,20 @@ function QuoteFormContent() {
     [paramFiturString],
   );
 
-  const [form, setForm] = useState<FormData>({
+  const [form, setForm] = useState<FormData>(() => ({
     nama: "",
     bisnis: paramNama,
     jenis_usaha: paramProfil || "Fotografer Wedding",
     fitur: paramFitur,
     nomor_wa: "",
     catatanTambahan: "",
-  });
+  }));
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
-    {}
+    {},
   );
-
-  // Sync state bila params berubah — deps stabil menggunakan primitive & memo value
-  useEffect(() => {
-    if (paramProfil) setForm((f) => ({ ...f, jenis_usaha: paramProfil }));
-    if (paramNama) setForm((f) => ({ ...f, bisnis: paramNama }));
-    if (paramFitur.length > 0) setForm((f) => ({ ...f, fitur: paramFitur }));
-  }, [paramProfil, paramNama, paramFitur]);
 
   const setField = (field: keyof FormData, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -140,14 +131,12 @@ function QuoteFormContent() {
     });
   };
 
-  // KALKULASI HARGA OTOMATIS
   const addOnsTotal = form.fitur.reduce((acc, fitId) => {
     const item = FITUR_PRICE_MAP[fitId];
     return acc + (item ? item.price : 0);
   }, 0);
 
   const subtotal = BASE_PRICE + addOnsTotal;
-  // Diskon khusus jika memilih 4 fitur atau lebih
   const discount = form.fitur.length >= 4 ? 40000 : 0;
   const totalPrice = Math.max(subtotal - discount, BASE_PRICE);
 
@@ -167,7 +156,6 @@ function QuoteFormContent() {
     return Object.keys(e).length === 0;
   };
 
-  // MEMBANGUN TEKS PESAN WHATSAPP TERFORMAT RAPI
   const buildWAMessage = () => {
     const fiturListText = form.fitur
       .map((id) => {
@@ -188,9 +176,13 @@ function QuoteFormContent() {
       `⚙️ *FITUR E-FORM DIPILIH (${form.fitur.length}):*\n` +
       `  • Base E-Form System (${formatRupiah(BASE_PRICE)})\n` +
       `${fiturListText}\n\n` +
-      (discount > 0 ? `🎁 *POTONGAN DISKON COMBO:* -${formatRupiah(discount)}\n` : "") +
+      (discount > 0
+        ? `🎁 *POTONGAN DISKON COMBO:* -${formatRupiah(discount)}\n`
+        : "") +
       `💰 *ESTIMASI TOTAL INVOICE:* ${formatRupiah(totalPrice)} (One-Time Payment)\n\n` +
-      (form.catatanTambahan ? `📝 *Catatan Khusus:* ${form.catatanTambahan}\n\n` : "") +
+      (form.catatanTambahan
+        ? `📝 *Catatan Khusus:* ${form.catatanTambahan}\n\n`
+        : "") +
       `Mohon dibantu konfirmasi pesanan dan proses penerbitan e-form saya ya! Terima kasih.`;
 
     return encodeURIComponent(message);
@@ -199,18 +191,52 @@ function QuoteFormContent() {
   const handleSubmit = async () => {
     if (!validate()) return;
     setLoading(true);
+    setErrors({});
 
-    await new Promise((r) => setTimeout(r, 600));
+    try {
+      const res = await fetch("/api/submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.nama,
+          whatsapp: form.nomor_wa,
+          data: {
+            bisnis: form.bisnis,
+            jenis_usaha: form.jenis_usaha,
+            fitur: form.fitur,
+            catatanTambahan: form.catatanTambahan || "",
+            totalPrice,
+          },
+        }),
+      });
 
-    setLoading(false);
-    setSubmitted(true);
+      const result = await res.json();
 
-    setTimeout(() => {
-      window.open(
-        `https://wa.me/${EMOON_WA_NUMBER}?text=${buildWAMessage()}`,
-        "_blank"
-      );
-    }, 1000);
+      if (!result.success) {
+        if (result.error?.includes("WhatsApp")) {
+          setErrors((e) => ({ ...e, nomor_wa: result.error }));
+        } else if (result.error?.includes("Nama")) {
+          setErrors((e) => ({ ...e, nama: result.error }));
+        } else {
+          alert(result.error || "Gagal menyimpan data pesanan.");
+        }
+        setLoading(false);
+        return;
+      }
+
+      setSubmitted(true);
+      setTimeout(() => {
+        window.open(
+          `https://wa.me/${EMOON_WA_NUMBER}?text=${buildWAMessage()}`,
+          "_blank",
+        );
+      }, 800);
+    } catch (err) {
+      console.error("Submit Error:", err);
+      alert("Terjadi kesalahan sistem/jaringan. Silakan coba lagi.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
@@ -227,14 +253,18 @@ function QuoteFormContent() {
           Rincian Invoice Terbuka di WA!
         </h3>
         <p className="text-white/70 leading-relaxed mb-6 text-sm">
-          Aplikasi WhatsApp kamu akan otomatis terbuka dengan rincian invoice sebesar{" "}
-          <strong className="text-[#F59E0B] font-semibold">{formatRupiah(totalPrice)}</strong>.
+          Data pesanan kamu telah tersimpan di sistem Emoon. Aplikasi WhatsApp
+          kamu akan otomatis terbuka dengan rincian invoice sebesar{" "}
+          <strong className="text-[#F59E0B] font-semibold">
+            {formatRupiah(totalPrice)}
+          </strong>
+          .
         </p>
         <button
           onClick={() => {
             window.open(
               `https://wa.me/${EMOON_WA_NUMBER}?text=${buildWAMessage()}`,
-              "_blank"
+              "_blank",
             );
           }}
           className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#25D366] text-white font-medium hover:opacity-90 transition-opacity text-sm mb-6"
@@ -242,7 +272,8 @@ function QuoteFormContent() {
           <Send size={16} /> Buka WhatsApp Sekarang
         </button>
         <div className="text-xs text-white/40 border-t border-white/10 pt-4">
-          Tim Emoon akan mengonfirmasi rincian e-form kamu secara langsung via WhatsApp.
+          Tim Emoon akan mengonfirmasi rincian e-form kamu secara langsung via
+          WhatsApp.
         </div>
       </motion.div>
     );
@@ -250,7 +281,6 @@ function QuoteFormContent() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      {/* SISI KIRI (7 KOLOM): FORM ISIAN PEMESAN */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -264,11 +294,11 @@ function QuoteFormContent() {
             Isi Data Kontak & Pilih Fitur
           </h3>
           <p className="text-xs text-white/50 mt-1">
-            Sesuaikan fitur kebutuhanmu di bawah. Total harga invoice di sebelah kanan akan terhitung otomatis secara live.
+            Sesuaikan fitur kebutuhanmu di bawah. Total harga invoice di sebelah
+            kanan akan terhitung otomatis secara live.
           </p>
         </div>
 
-        {/* INPUT IDENTITAS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
             <label className="block text-xs font-medium text-white/80">
@@ -303,7 +333,6 @@ function QuoteFormContent() {
           </div>
         </div>
 
-        {/* JENIS USAHA & NO WA */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
             <label className="block text-xs font-medium text-white/80">
@@ -345,12 +374,14 @@ function QuoteFormContent() {
           </div>
         </div>
 
-        {/* TOGGLE FITUR PAKET */}
         <div className="space-y-2 pt-1">
-          <label className="block text-xs font-medium text-white/80 flex items-center justify-between">
+          {/* Hapus 'block' agar tidak bentrok dengan 'flex' */}
+          <label className="text-xs font-medium text-white/80 flex items-center justify-between">
             <span>Pilih Fitur Tambahan (Add-on)</span>
             <span className="text-[11px] text-[#F59E0B]">
-              {form.fitur.length >= 4 ? "🎁 Hemat Rp 40rb Activated!" : "Centang untuk tambah fitur"}
+              {form.fitur.length >= 4
+                ? "🎁 Hemat Rp 40rb Activated!"
+                : "Centang untuk tambah fitur"}
             </span>
           </label>
 
@@ -376,9 +407,11 @@ function QuoteFormContent() {
                       {item.description}
                     </div>
                   </div>
-                  <div className="text-right flex-shrink-0 ml-2">
+                  <div className="text-right shrink-0 ml-2">
                     <span className="text-[11px] font-semibold text-[#F59E0B]">
-                      {item.price === 0 ? "Included" : `+${formatRupiah(item.price)}`}
+                      {item.price === 0
+                        ? "Included"
+                        : `+${formatRupiah(item.price)}`}
                     </span>
                   </div>
                 </button>
@@ -388,17 +421,14 @@ function QuoteFormContent() {
         </div>
       </motion.div>
 
-      {/* SISI KANAN (5 KOLOM): CATATAN INVOICE REAL-TIME CALCULATOR */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="lg:col-span-5 lg:sticky lg:top-28 space-y-4 text-left"
       >
         <div className="bg-[#0F0A1E] border border-[#7C3AED]/30 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
-          {/* AMBIENT GLOW INSIDE INVOICE CARD */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-[#7C3AED]/20 rounded-full blur-2xl pointer-events-none" />
 
-          {/* HEADER CATATAN INVOICE */}
           <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
             <div className="flex items-center gap-2">
               <Receipt size={18} className="text-[#F59E0B]" />
@@ -411,11 +441,12 @@ function QuoteFormContent() {
             </span>
           </div>
 
-          {/* INFO VENDOR */}
           <div className="space-y-1 text-xs text-white/70 mb-4 bg-white/5 p-3 rounded-xl border border-white/5">
             <div className="flex justify-between">
               <span className="text-white/40">Brand / Studio:</span>
-              <span className="font-semibold text-white">{form.bisnis || "Belum diisi"}</span>
+              <span className="font-semibold text-white">
+                {form.bisnis || "Belum diisi"}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-white/40">Jenis Usaha:</span>
@@ -423,20 +454,26 @@ function QuoteFormContent() {
             </div>
           </div>
 
-          {/* RINCIAN ITEMIZE HARGA */}
           <div className="space-y-2.5 text-xs text-white/80 border-b border-white/10 pb-4 mb-4">
             <div className="flex justify-between items-center">
               <span>System E-Form Order Base</span>
-              <span className="font-semibold text-white">{formatRupiah(BASE_PRICE)}</span>
+              <span className="font-semibold text-white">
+                {formatRupiah(BASE_PRICE)}
+              </span>
             </div>
 
             {form.fitur.map((fitId) => {
               const item = FITUR_PRICE_MAP[fitId];
               if (!item || item.price === 0) return null;
               return (
-                <div key={fitId} className="flex justify-between items-center text-white/60">
+                <div
+                  key={fitId}
+                  className="flex justify-between items-center text-white/60"
+                >
                   <span className="truncate pr-2">+ {item.label}</span>
-                  <span className="font-medium text-white">{formatRupiah(item.price)}</span>
+                  <span className="font-medium text-white">
+                    {formatRupiah(item.price)}
+                  </span>
                 </div>
               );
             })}
@@ -451,11 +488,10 @@ function QuoteFormContent() {
             )}
           </div>
 
-          {/* TOTAL INVOICE */}
           <div className="flex items-center justify-between mb-6">
             <div>
               <div className="text-xs text-white/40">Estimasi Total Biaya:</div>
-              <div className="font-clash text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#7C3AED] via-[#EC4899] to-[#F59E0B]">
+              <div className="font-clash text-2xl font-bold text-transparent bg-clip-text bg-linear-to-r from-[#7C3AED] via-[#EC4899] to-[#F59E0B]">
                 {formatRupiah(totalPrice)}
               </div>
             </div>
@@ -464,35 +500,21 @@ function QuoteFormContent() {
             </div>
           </div>
 
-          {/* TOMBOL ACTION SUBMIT TO WA */}
           <Button
             onClick={handleSubmit}
             disabled={loading}
             icon={loading ? undefined : <Send size={16} />}
-            className="w-full py-3.5 text-sm bg-gradient-to-r from-[#7C3AED] to-[#F59E0B] hover:opacity-95 shadow-[0_0_25px_rgba(124,58,237,0.4)]"
+            className="w-full py-3.5 text-sm bg-linear-to-r from-[#7C3AED] to-[#F59E0B] hover:opacity-95 shadow-[0_0_25px_rgba(124,58,237,0.4)]"
           >
-            {loading ? "Memproses Invoice..." : "Kirim Order via WhatsApp"}
+            {loading ? "Memproses & Menyimpan..." : "Kirim Order via WhatsApp"}
           </Button>
 
           <p className="text-center text-[10px] text-white/30 mt-3 flex items-center justify-center gap-1">
-            <ShieldCheck size={12} className="text-[#10B981]" /> Konsultasi & Penyesuaian Gratis via WA
+            <ShieldCheck size={12} className="text-[#10B981]" /> Konsultasi &
+            Penyesuaian Gratis via WA
           </p>
         </div>
       </motion.div>
     </div>
-  );
-}
-
-export default function RequestQuoteForm() {
-  return (
-    <Suspense
-      fallback={
-        <div className="text-center py-12 text-white/40 text-sm">
-          Memuat kalkulator invoice...
-        </div>
-      }
-    >
-      <QuoteFormContent />
-    </Suspense>
   );
 }

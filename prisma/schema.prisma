@@ -7,13 +7,29 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Model Skema Utama Emoon
+// Model 1: Data Pemesanan Form (dengan field status)
 model FormSubmission {
   id           Int      @id @default(autoincrement())
   customerName String   @map("customer_name")
   whatsappNo   String   @map("whatsapp_no")
+  businessType String?  @map("business_type")
   formData     Json     @map("form_data")
+  status       String   @default("pending") @map("status") // pending | contacted | done
   createdAt    DateTime @default(now()) @map("created_at")
 
   @@map("form_submissions")
+}
+
+// Model 2: Data Testimoni Klien
+model Testimonial {
+  id          Int      @id @default(autoincrement())
+  name        String   @map("name")
+  role        String   @map("role")           // contoh: "MUA", "Fotografer"
+  quote       String   @db.Text @map("quote")
+  rating      Int      @default(5) @map("rating")   // 1 - 5
+  isApproved  Boolean  @default(false) @map("is_approved")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("testimonials")
 }

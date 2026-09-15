@@ -35,7 +35,10 @@ export async function POST(request: NextRequest) {
 
   if (!checkRateLimit(ip)) {
     return NextResponse.json(
-      { success: false, error: "Terlalu banyak permintaan. Coba lagi dalam 1 menit." },
+      {
+        success: false,
+        error: "Terlalu banyak permintaan. Coba lagi dalam 1 menit.",
+      },
       { status: 429 },
     );
   }
@@ -64,7 +67,11 @@ export async function POST(request: NextRequest) {
     const whatsapp = String(body.whatsapp).trim();
     if (!isValidWhatsApp(whatsapp)) {
       return NextResponse.json(
-        { success: false, error: "Format nomor WhatsApp tidak valid. Gunakan format: 08xxxxxxxxxx" },
+        {
+          success: false,
+          error:
+            "Format nomor WhatsApp tidak valid. Gunakan format: 08xxxxxxxxxx",
+        },
         { status: 400 },
       );
     }

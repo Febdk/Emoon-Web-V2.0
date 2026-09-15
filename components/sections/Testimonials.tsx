@@ -1,11 +1,47 @@
 "use client";
-import React from "react";
-import Link from "next/link"; // 1. Impor Link dari Next.js
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { Button, SectionLabel, SectionTitle } from "../ui/CustomComponents";
 
+interface TestimonialItem {
+  id?: number;
+  name: string;
+  role: string;
+  quote: string;
+  rating?: number;
+}
+
+const defaultTestimonials: TestimonialItem[] = [
+  {
+    name: "Andi R.",
+    role: "MUA",
+    quote:
+      "Gila, semenjak pakai Emoon klien jadi jarang banyak nanya karena pricelist & T&C udah jelas di form. Tinggal trf aja.",
+  },
+  {
+    name: "Saras",
+    role: "Studio Owner",
+    quote:
+      "Dulu rekap manual di excel, sering kelewat. Sekarang tiap order masuk langsung ternotif. Branding formnya juga premium banget!",
+  },
+];
+
 export default function Testimonials() {
+  const [list, setList] = useState<TestimonialItem[]>(defaultTestimonials);
+
+  useEffect(() => {
+    fetch("/api/testimonials")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+          setList(data.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <section className="py-24 relative border-t border-white/5 bg-[#0F0A1E]">
       <div className="container mx-auto px-6 max-w-6xl text-center">
@@ -13,22 +49,9 @@ export default function Testimonials() {
         <SectionTitle>Vendor yang udah upgrade sistem ordernya.</SectionTitle>
 
         <div className="grid md:grid-cols-2 gap-6 mt-16 text-left max-w-4xl mx-auto">
-          {[
-            {
-              name: "Andi R.",
-              role: "MUA",
-              quote:
-                "Gila, semenjak pakai Emoon klien jadi jarang banyak nanya karena pricelist & T&C udah jelas di form. Tinggal trf aja.",
-            },
-            {
-              name: "Saras",
-              role: "Studio Owner",
-              quote:
-                "Dulu rekap manual di excel, sering kelewat. Sekarang tiap order masuk langsung ternotif. Branding formnya juga premium banget!",
-            },
-          ].map((testi, i) => (
+          {list.slice(0, 4).map((testi, i) => (
             <motion.div
-              key={i}
+              key={testi.id || i}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -59,7 +82,6 @@ export default function Testimonials() {
           ))}
         </div>
 
-        {/* 2. Bungkus Button dengan Link ke routing /testimoni */}
         <div className="mt-12">
           <Link href="/testimoni">
             <Button
