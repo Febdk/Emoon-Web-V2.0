@@ -46,7 +46,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md glass-card rounded-3xl p-8 border border-[#7C3AED]/20 shadow-2xl relative z-10">
         <div className="text-center mb-8">
           <Image
-            src="/icone-emoon.png"
+            src="/icone-emoon.webp"
             alt="Emoon Logo"
             width={56}
             height={56}

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
@@ -82,8 +83,15 @@ export default function AdminLayout({
         <div className="space-y-6">
           {/* Logo (Desktop) */}
           <div className="hidden md:flex items-center gap-3 px-2">
-            <div className="w-9 h-9 rounded-xl bg-linear-to-tr from-[#7C3AED] to-[#F59E0B] flex items-center justify-center font-bold text-white shadow-lg shadow-[#7C3AED]/30">
-              E
+            <div className="relative w-9 h-9 rounded-xl overflow-hidden shrink-0 flex items-center justify-center bg-white/5 border border-white/10">
+              <Image
+                src="/icone-emoon.webp" // Ubah sesuai nama file di folder public/ (misal: /logo.svg)
+                alt="Emoon Logo"
+                width={36}
+                height={36}
+                className="object-contain p-1"
+                priority
+              />
             </div>
             <div>
               <h1 className="font-clash font-bold text-lg leading-none text-white">
