@@ -37,7 +37,7 @@ export default function AdminSidebar() {
       <div className="pb-6 mb-6 border-b border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Image
-            src="/icone-emoon.png"
+            src="/icone-emoon.webp"
             alt="Emoon Logo"
             width={36}
             height={36}

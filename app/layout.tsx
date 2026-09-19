@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     siteName: "Emoon Digital",
     images: [
       {
-        url: "https://emoon.eformku.id/icone-emoon.png",
+        url: "https://emoon.eformku.id/icone-emoon.webp",
         width: 800,
         height: 800,
         alt: "Emoon Logo Branding",
@@ -65,15 +65,15 @@ export const metadata: Metadata = {
     title: "Emoon | Standar Baru Form Order Digital",
     description:
       "Emoon bantu fotografer, MUA, dan studio kreatif punya sistem pemesanan digital yang rapi, branded, dan profesional.",
-    images: ["https://emoon.eformku.id/icone-emoon.png"],
+    images: ["https://emoon.eformku.id/icone-emoon.webp"],
   },
   verification: {
     google: "nyDe2TgpHwi_iMAHSc2CA0K9dv7UEnM_SWFrB3lP8d8",
   },
   icons: {
-    icon: "/icone-emoon.png",
-    shortcut: "/icone-emoon.png",
-    apple: "/icone-emoon.png",
+    icon: "/icone-emoon.webp",
+    shortcut: "/icone-emoon.webp",
+    apple: "/icone-emoon.webp",
   },
 };
 
@@ -95,7 +95,7 @@ const jsonLd = {
       "description":
         "Sistem formulir pemesanan digital khusus fotografer, MUA, dan studio kreatif dengan integrasi WhatsApp otomatis dan Terms & Conditions.",
       "url": "https://emoon.eformku.id",
-      "image": "https://emoon.eformku.id/icone-emoon.png",
+      "image": "https://emoon.eformku.id/icone-emoon.webp",
       "creator": {
         "@type": "Organization",
         "name": "Emoon Digital",

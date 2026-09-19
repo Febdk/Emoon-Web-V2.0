@@ -48,7 +48,7 @@ export default function Preloader() {
               className="relative"
             >
               <Image
-                src="/icone-emoon.png" // Memakai file logo yang sama dengan Navbar
+                src="/icone-emoon.webp" // Memakai file logo yang sama dengan Navbar
                 alt="Emoon Preloader Logo"
                 width={100}
                 height={100}
